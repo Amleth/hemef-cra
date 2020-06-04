@@ -31,15 +31,27 @@ class eleve extends React.Component {
       return <div>Données en cours de téléchargement...</div>
     } else {
       //affichage conditionnel pour le champ date de sortie
-      let intitule_sortie_conservatoire = null
-      let champ_sortie_conservatoire = null
+      let intitule_date_sortie_conservatoire = null
+      let champ_date_sortie_conservatoire = null
       if (this.state.eleveData.hypothese_cursus_date_sortie_conservatoire) {
-        intitule_sortie_conservatoire = "Date de sortie supposée :"
-        champ_sortie_conservatoire = <Box p={2}>{this.state.eleveData.hypothese_cursus_date_sortie_conservatoire}</Box>
+        intitule_date_sortie_conservatoire = "Date de sortie supposée :"
+        champ_date_sortie_conservatoire = <Box p={2}>{this.state.eleveData.hypothese_cursus_date_sortie_conservatoire}</Box>
       }
       else if (this.state.eleveData.cursus_date_sortie_conservatoire) {
-        intitule_sortie_conservatoire = "Date de sortie :"
-        champ_sortie_conservatoire = <Box p={2}>{this.state.eleveData.cursus_date_sortie_conservatoire.split("^^")[0]}</Box>
+        intitule_date_sortie_conservatoire = "Date de sortie :"
+        champ_date_sortie_conservatoire = <Box p={2}>{this.state.eleveData.cursus_date_sortie_conservatoire.split("^^")[0]}</Box>
+      }
+
+      //affichage conditionnel pour le champ motif de sortie
+      let intitule_motif_sortie_conservatoire = null
+      let champ_motif_sortie_conservatoire = null
+      if (this.state.eleveData.hypothese_cursus_motif_sortie) {
+        intitule_motif_sortie_conservatoire = "Motif de sortie supposé :"
+        champ_motif_sortie_conservatoire = <Box p={2}>{this.state.eleveData.hypothese_cursus_motif_sortie}</Box>
+      }
+      else if (this.state.eleveData.cursus_motif_sortie) {
+        intitule_motif_sortie_conservatoire = "Motif de sortie :"
+        champ_motif_sortie_conservatoire = <Box p={2}>{this.state.eleveData.cursus_motif_sortie.split("^^")[0]}</Box>
       }
 
       //affichage conditionnel du pseudonyme
@@ -97,13 +109,15 @@ class eleve extends React.Component {
           <Grid container direction='row' justify='flex-start' alignItems='center'>
             <Grid item>
               <Typography variant='button' component='h2'>
-                <Box p={2}>{intitule_sortie_conservatoire}</Box>
+                <Box p={2}>{intitule_date_sortie_conservatoire}</Box>
+                <Box p={2}>{intitule_motif_sortie_conservatoire}</Box>
               </Typography>
             </Grid>
 
             <Grid item>
               <Typography variant='body1' component='body' >
-                {champ_sortie_conservatoire}
+                {champ_date_sortie_conservatoire}
+                {champ_motif_sortie_conservatoire}
               </Typography>
             </Grid>
           </Grid>
