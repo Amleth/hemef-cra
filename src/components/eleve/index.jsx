@@ -29,19 +29,24 @@ class eleve extends React.Component {
   render() {
     if (!this.state.eleveData) {
       return <div>Données en cours de téléchargement...</div>
-    } else {     
-      let intitule_sortie_conservatoire = ""
+    } else {
+      //affichage conditionnel pour le champ date de sortie
+      let intitule_sortie_conservatoire = null
       let champ_sortie_conservatoire = null
       if (this.state.eleveData.hypothese_cursus_date_sortie_conservatoire) {
         intitule_sortie_conservatoire = "Date de sortie supposée :"
         champ_sortie_conservatoire = <Box p={2}>{this.state.eleveData.hypothese_cursus_date_sortie_conservatoire}</Box>
       }
-      else {
+      else if (this.state.eleveData.cursus_date_sortie_conservatoire) {
         intitule_sortie_conservatoire = "Date de sortie :"
         champ_sortie_conservatoire = <Box p={2}>{this.state.eleveData.cursus_date_sortie_conservatoire.split("^^")[0]}</Box>
       }
 
-      
+      //affichage conditionnel du pseudonyme
+      let pseudonyme = "Non Renseigné"
+      if (this.state.eleveData.pseudonyme){
+        let pseudonyme = this.state.eleveData.pseudonyme
+      }
 
       return (
         <Container>
@@ -51,6 +56,7 @@ class eleve extends React.Component {
               <Typography variant='button' component='h2'>
                 <Box p={2}>Nom :</Box>
                 <Box p={2}>Prénom :</Box>
+                <Box p={2}>Pseudonyme :</Box>
                 <Box p={2}>Sexe :</Box>
                 <Box p={2}>Date de naissance :</Box>
                 <Box p={2}>Lieu de naissance :</Box>
@@ -61,6 +67,7 @@ class eleve extends React.Component {
               <Typography variant='body1' component='body' >
                 <Box p={2}>{this.state.eleveData.nom}</Box>
                 <Box p={2}>{this.state.eleveData.prenom}</Box>
+                <Box p={2}>{pseudonyme}</Box>
                 <Box p={2}>{this.state.eleveData.sexe}</Box>
                 <Box p={2}>{this.state.eleveData.date_de_naissance.split("^^")[0]}</Box>
                 <Box p={2}>{this.state.eleveData.nait_a_label}</Box>
@@ -75,7 +82,6 @@ class eleve extends React.Component {
                 <Box p={2}>Cote registre AN :</Box>
                 <Box p={2}>Date d'entrée au conservatoire :</Box>
                 <Box p={2}>Motif d'admission :</Box>
-                <Box p={2}>{intitule_sortie_conservatoire}</Box>
               </Typography>
             </Grid>
 
@@ -84,16 +90,29 @@ class eleve extends React.Component {
                 <Box p={2}>{this.state.eleveData.cote_AN_registre}</Box>
                 <Box p={2}>{this.state.eleveData.cursus_date_entree_conservatoire.split("^^")[0]}</Box>
                 <Box p={2}>{this.state.eleveData.cursus_motif_admission}</Box>
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid container direction='row' justify='flex-start' alignItems='center'>
+            <Grid item>
+              <Typography variant='button' component='h2'>
+                <Box p={2}>{intitule_sortie_conservatoire}</Box>
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              <Typography variant='body1' component='body' >
                 {champ_sortie_conservatoire}
               </Typography>
             </Grid>
           </Grid>
+          
         </Container>
 
       )
     }
   }
 }
-
 
 export default withRouter(eleve)
