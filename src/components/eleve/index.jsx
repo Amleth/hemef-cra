@@ -21,6 +21,28 @@ class eleve extends React.Component {
     const id = this.props.match.params.id
 
     axios.get('http://data-iremus.huma-num.fr/api/hemef/eleve/' + id).then(res => {
+
+      //Code a Adapter
+      //
+      // if (res.data.composed_works) {
+      //   let newDataComp = {}
+      //   let tabDataComp = []
+      //   const tab = res.data.composed_works
+      //   for (let i = 0; i < tab.length; i++) {
+      //     if (!(tab[i].work in newDataComp)) {
+      //       newDataComp[tab[i].work] = tab[i].work_name
+      //     }
+      //   }
+      //   for (let key in newDataComp) {
+      //     let workObj = {}
+      //     workObj.work = key
+      //     workObj.work_name = newDataComp[key]
+      //     tabDataComp.push(workObj)
+      //   }
+      //   console.log(tabDataComp)
+      //   res.data.composed_works = tabDataComp
+      // }
+
       this.setState({ eleveData: res.data })
     }
     )
@@ -121,7 +143,13 @@ class eleve extends React.Component {
               </Typography>
             </Grid>
           </Grid>
-          
+          <MaterialTable
+            title="Classes suivies"
+            columns={[
+              {title: "Discipline", field: ""}
+            ]}
+            data={this.state.parcours}
+          />
         </Container>
 
       )

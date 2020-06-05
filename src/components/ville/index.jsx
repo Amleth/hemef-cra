@@ -32,8 +32,7 @@ class ville extends React.Component {
         // console.log(data[sub_event])
         const composers = data[sub_event].map(item =>
           (item.composer_surname ? (item.composer_given_name ? item.composer_given_name + " " : "") + item.composer_surname : null)
-          //soucis avec le map qui fait un produit carthésien avec les champs proposés... à régler
-          // item.composer_given_name + " " + item.composer_surname
+        // item.composer_given_name + " " + item.composer_surname
         )
         const distinctPerformers = [...new Set(performers)]
         const distinctComposers = [...new Set(composers)]
