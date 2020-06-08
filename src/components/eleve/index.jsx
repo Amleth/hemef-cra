@@ -22,27 +22,6 @@ class eleve extends React.Component {
 
     axios.get('http://data-iremus.huma-num.fr/api/hemef/eleve/' + id).then(res => {
 
-      //Code a Adapter
-      //
-      // if (res.data.composed_works) {
-      //   let newDataComp = {}
-      //   let tabDataComp = []
-      //   const tab = res.data.composed_works
-      //   for (let i = 0; i < tab.length; i++) {
-      //     if (!(tab[i].work in newDataComp)) {
-      //       newDataComp[tab[i].work] = tab[i].work_name
-      //     }
-      //   }
-      //   for (let key in newDataComp) {
-      //     let workObj = {}
-      //     workObj.work = key
-      //     workObj.work_name = newDataComp[key]
-      //     tabDataComp.push(workObj)
-      //   }
-      //   console.log(tabDataComp)
-      //   res.data.composed_works = tabDataComp
-      // }
-
       this.setState({ eleveData: res.data })
     }
     )
@@ -146,9 +125,16 @@ class eleve extends React.Component {
           <MaterialTable
             title="Classes suivies"
             columns={[
-              {title: "Discipline", field: ""}
+              {title: "Discipline", field: "discipline_enseignée_label"},
+              {title: "Professeur", field: "professeur_label"},{
+                title: "Date d'entrée", render: row => {
+                  let date = row.date_entrée.split('T')[0]
+                  date = date.split('-')
+                  return (date[2] + "-" + date[1] + "-" + date[0])
+                }
+              }
             ]}
-            data={this.state.parcours}
+            data={this.state.eleveData.parcours}
           />
         </Container>
 
