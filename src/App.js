@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import classeCursus from './components/classeCursus'
+
 // import indexVilles from './components/indexVilles'
 // import indexElevesCursus from './components/eleveCursus'
 // import ville from './components/ville'
@@ -11,6 +11,7 @@ import { Typography, Box, Grid, Container, Button, AppBar, Toolbar } from '@mate
 import { Home } from '@material-ui/icons';
 import indexEleves from './components/indexEleves'
 import eleve from './components/eleve'
+import classeCursus from './components/classeCursus'
 //a adapter
 export default function App() {
   return (
@@ -76,12 +77,13 @@ export default function App() {
             </Container>
 
           </Route>
-          {/* <Route path='/classe_cursus/:id' children={classeCursus} />
+          {/*
           <Route path='/discipline/:id' children={discipline} />
 
           <Route path='/ville/:id' children={ville} />
           <Route path='/index_disciplines' children={indexDisciplines} />
           <Route path='/index_villes' children={indexVilles} /> */}
+          <Route path='/classe_cursus/:id' children={classeCursus} />
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
         </Switch>
