@@ -71,8 +71,8 @@ class classeCursus extends React.Component {
                 title='Prix Obtenus'
                 columns={[
                   { title: "Intitulé", field: "" },
-                  { title: "Discipline", field: "" },
-                  { title: "Date", field: "" }
+                  { title: "Date", field: "" },
+                  { title: "Discipline", field: "" }
                 ]}
                 data={this.state.classeCursusData.prix}
                 onRowClick={((evt, selectedRow) => {

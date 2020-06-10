@@ -56,9 +56,9 @@ class eleve extends React.Component {
       }
 
       //affichage conditionnel du pseudonyme
-      let pseudonyme = "Non Renseigné"
+      let pseudonyme = " "
       if (this.state.eleveData.pseudonyme){
-        let pseudonyme = this.state.eleveData.pseudonyme
+        pseudonyme = this.state.eleveData.pseudonyme
       }
 
       return (
@@ -66,7 +66,7 @@ class eleve extends React.Component {
           <Typography component='h1' variant='h3'>Page de l'élève</Typography>
           <Grid container direction='row' justify='flex-start' alignItems='center'>
             <Grid item>
-              <Typography variant='button' component='h2'>
+              <Typography variant='button'>
                 <Box p={2}>Nom :</Box>
                 <Box p={2}>Prénom :</Box>
                 <Box p={2}>Pseudonyme :</Box>
@@ -77,7 +77,7 @@ class eleve extends React.Component {
             </Grid>
 
             <Grid item>
-              <Typography variant='body1' component='body' >
+              <Typography variant='body1'>
                 <Box p={2}>{this.state.eleveData.nom}</Box>
                 <Box p={2}>{this.state.eleveData.prenom}</Box>
                 <Box p={2}>{pseudonyme}</Box>
@@ -91,7 +91,7 @@ class eleve extends React.Component {
           <Typography component='h2' variant='h4'>Informations relatives au cursus</Typography>
           <Grid container direction='row' justify='flex-start' alignItems='center'>
             <Grid item>
-              <Typography variant='button' component='h2'>
+              <Typography variant='button' >
                 <Box p={2}>Cote registre AN :</Box>
                 <Box p={2}>Date d'entrée au conservatoire :</Box>
                 <Box p={2}>Motif d'admission :</Box>
@@ -99,7 +99,7 @@ class eleve extends React.Component {
             </Grid>
 
             <Grid item>
-              <Typography variant='body1' component='body' >
+              <Typography variant='body1' >
                 <Box p={2}>{this.state.eleveData.cote_AN_registre}</Box>
                 <Box p={2}>{this.state.eleveData.cursus_date_entree_conservatoire.split("^^")[0]}</Box>
                 <Box p={2}>{this.state.eleveData.cursus_motif_admission}</Box>
@@ -109,14 +109,14 @@ class eleve extends React.Component {
 
           <Grid container direction='row' justify='flex-start' alignItems='center'>
             <Grid item>
-              <Typography variant='button' component='h2'>
+              <Typography variant='button' >
                 <Box p={2}>{intitule_date_sortie_conservatoire}</Box>
                 <Box p={2}>{intitule_motif_sortie_conservatoire}</Box>
               </Typography>
             </Grid>
 
             <Grid item>
-              <Typography variant='body1' component='body' >
+              <Typography variant='body1'>
                 {champ_date_sortie_conservatoire}
                 {champ_motif_sortie_conservatoire}
               </Typography>
