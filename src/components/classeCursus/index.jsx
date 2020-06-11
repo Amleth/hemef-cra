@@ -5,7 +5,8 @@ import {
   Box,
   Grid,
   Container,
-  Typography
+  Typography,
+  TextField
 } from '@material-ui/core'
 import MaterialTable from 'material-table'
 
@@ -22,63 +23,47 @@ class classeCursus extends React.Component {
     const id = this.props.match.params.id
 
     axios.get('http://data-iremus.huma-num.fr/api/hemef/parcours_classe/' + id).then(res => {
-
-      // if (res.data.composed_works) {
-      //   let newDataComp = {}
-      //   let tabDataComp = []
-      //   const tab = res.data.composed_works
-      //   for (let i = 0; i < tab.length; i++) {
-      //     if (!(tab[i].work in newDataComp)) {
-      //       newDataComp[tab[i].work] = tab[i].work_name
-      //     }
-      //   }
-      //   for (let key in newDataComp) {
-      //     let workObj = {}
-      //     workObj.work = key
-      //     workObj.work_name = newDataComp[key]
-      //     tabDataComp.push(workObj)
-      //   }
-      //   console.log(tabDataComp)
-      //   res.data.composed_works = tabDataComp
-      // }
-
       this.setState({ classeCursusData: res.data })
     }
     )
   }
-
-  // handleClick(rang) {
-  //   const WorkId = (rang).slice(-36)
-  //   this.props.history.push('/work/' + WorkId)
-  // }
-
+  
   render() {
     if (!this.state.classeCursusData) {
       return <div>Données en cours de téléchargement...</div>
     } else {
-
+      console.log('données : ')
       console.log(this.state.classeCursusData)
+      let parcours_classe = this.state.classeCursusData
       let tablePrix = null
       // let tableInterpretations = null
 
       //A ADAPTER AVEC LA MAJ API
-      if (this.state.classeCursusData.prix !== undefined) {
-        //let compositionData = this.state.musicianData.composed_works;
+      if (this.state.classeCursusData.prix !== undefined) {;
         tablePrix =
           <Grid>
             <Box m={3}>
               <MaterialTable
                 title='Prix Obtenus'
                 columns={[
-                  { title: "Intitulé", field: "" },
-                  { title: "Date", field: "" },
-                  { title: "Discipline", field: "" }
+                  { title: "Intitulé", field: "prix_nom" },
+                  { title: "Date", field: "string",
+                render : (r) => {
+                  if (r.prix_année){
+                    console.log(r.prix_année)
+                  }
+                  else if (r.prix_hypothèse_année){
+                    console.log(r.prix_hypothèse_année)
+                  }
+                } },
+
+                  { title: "Discipline", field: "prix_discipline_label" }
                 ]}
                 data={this.state.classeCursusData.prix}
-                onRowClick={((evt, selectedRow) => {
-                  const workId = selectedRow.work.slice(-36)
-                  this.props.history.push('/work/' + workId)
-                })}
+                // onRowClick={((evt, selectedRow) => {
+                //   const workId = selectedRow.work.slice(-36)
+                //   this.props.history.push('/work/' + workId)
+                // })}
               >
 
               </MaterialTable>
@@ -86,66 +71,14 @@ class classeCursus extends React.Component {
           </Grid>
       }
 
-      // if (this.state.musicianData.performed_works !== undefined) {
-      //   let performanceData = this.state.musicianData.performed_works;
-      //   tableInterpretations =
-      //     <Grid>
-      //       <Box m={3}>
-      //         <MaterialTable
-      //           title='Oeuvres Interprétées'
-      //           columns={[
-      //             {
-      //               title: "Titre", render: row => {
-      //                 return (row.work_name ? row.work_name : 'Oeuvre anonyme')
-      //               }
-      //             },
-      //             { title: "Radio de diffusion", field: "radio_name" },
-      //             {
-      //               title: "Date d'interprétation", render: row => {
-      //                 let date = row.start_date.split('T')[0]
-      //                 date = date.split('-')
-      //                 return (date[2] + "-" + date[1] + "-" + date[0])
-      //               }
-      //             },
-      //             {
-      //               title: "Plage horaire d'interprétation", render: row => {
-      //                 let HDeb = row.start_date.split('T')[1]
-      //                 HDeb = HDeb.split(':00+')[0]
-      //                 let HFin = row.end_date.split('T')[1]
-      //                 HFin = HFin.split(':00+')[0]
-      //                 return (HDeb + " - " + HFin)
-      //               }
-      //             },
-      //             {
-      //               title: "Compositeur de l'oeuvre", render: row => {
-      //                 return (row.composer_surname ? (row.composer_given_name ? row.composer_given_name + " " : "") + row.composer_surname : 'Compositeur anonyme')
-      //               }
-      //             },
-      //           ]}
-      //           data={performanceData}
-      //           onRowClick={((evt, selectedRow) => {
-      //             const workId = selectedRow.work.slice(-36)
-      //             this.props.history.push('/work/' + workId)
-      //           })}>
-      //         </MaterialTable>
-      //       </Box>
-      //     </Grid>
-      // }
+      let informations_clés = null
 
-      // const dateNaissance = this.state.musicianData.birth_date
-      // const dateMort = this.state.musicianData.death_date
-      // let datesMusicien = ""
-      // if (dateNaissance !== undefined) {
-      //   datesMusicien = dateNaissance + " - "
-      // } else {
-      //   datesMusicien = "???? - "
-      // }
-      // if (dateMort !== undefined) {
-      //   datesMusicien = datesMusicien + dateMort
-      // }
-      // else {
-      //   datesMusicien = datesMusicien + "????"
-      // }
+      if (this.state.classeCursusData.hypothèse_date_sortie){
+        informations_clés =
+        <Grid container direction='row' justify='flex-start' alignItems='center'>
+            {makeTextField('Élève', parcours_classe.nom + parcours_classe.prénom)})}
+          </Grid>
+      }
 
       return (
         <Container>
@@ -177,12 +110,28 @@ class classeCursus extends React.Component {
             </Grid>
           </Grid>
           {tablePrix}
-{/* 
-          
-          {tableInterpretations} */}
         </Container>
       )
     }
+  }
+}
+
+function makeTextField(f, v) {
+  return (
+    <TextField
+      label={f}
+      defaultValue={v}
+      InputProps={{
+        readOnly: true
+      }}
+    />
+  )
+}
+
+function makeDate(d) {
+  if (d){
+    let tempDate = d.split('^^')[0]
+    return (tempDate.split('-')[2] + '/' + tempDate.split('-')[1] + '/' + tempDate.split('-')[0])
   }
 }
 

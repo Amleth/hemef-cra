@@ -115,7 +115,7 @@ class eleve extends React.Component {
             ]}
             data={this.state.eleveData.parcours}
             onRowClick={(evt, selectedRow) => {
-              const parcoursClasseID = selectedRow.classe_parcourue.slice(-36)
+              const parcoursClasseID = selectedRow.parcours.slice(-36)
               this.props.history.push('/classe_cursus/' + parcoursClasseID)
             }}
 
