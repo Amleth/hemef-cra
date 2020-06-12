@@ -2,7 +2,6 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
-  Box,
   Grid,
   TextField,
   Container,
@@ -65,17 +64,17 @@ class eleve extends React.Component {
 
       if (this.state.eleveData.pseudonyme) {
         infos_eleve =
-          <Grid container direction='row' justify='flex-start' alignItems='center'>
+          <Grid container direction='column' >
             {makeTextField('Nom', eleve.nom)}
             {makeTextField('Prénom', eleve.prenom)}
-            {makeTextField('Pseudonyme', eleve.pseudonyme)}
             {makeTextField('Sexe', eleve.sexe)}
             {makeTextField('Date de naissance', dateNaissance)}
             {makeTextField('Lieu de naissance', eleve.nait_a_label)}
+            {makeTextField('Pseudonyme', eleve.pseudonyme)}
           </Grid>
       } else {
         infos_eleve =
-          <Grid container direction='row' justify='flex-start' alignItems='center'>
+          <Grid container direction='column' >
             {makeTextField('Nom', eleve.nom)}
             {makeTextField('Prénom', eleve.prenom)}
             {makeTextField('Sexe', eleve.sexe)}
@@ -85,21 +84,24 @@ class eleve extends React.Component {
       }
 
       //Creation conditionnelle des infos_cursus
-      let infos_cursus = 
-        <Grid container direction='row' justify='flex-start' alignItems='center'>
-              {makeTextField('Cote AN Registre', eleve.cote_AN_registre)}
-              {makeTextField("Date d'entrée au concervatoire ", makeDate(eleve.cursus_date_entree_conservatoire))}
-              {makeTextField("Motif d'entrée", eleve.cursus_motif_admission)}
-              {makeTextField(intitule_date_sortie_conservatoire, champ_date_sortie_conservatoire)}
-              {makeTextField(intitule_motif_sortie_conservatoire, champ_motif_sortie_conservatoire)}
-            </Grid>
+      let infos_cursus =
+        <Grid container direction='column' >
+          {makeTextField('Cote AN Registre', eleve.cote_AN_registre)}
+          <br />
+          {makeTextField("Date d'entrée au concervatoire ", makeDate(eleve.cursus_date_entree_conservatoire))}
+          {makeTextField("Motif d'entrée", eleve.cursus_motif_admission)}
+          <br />
+          {makeTextField(intitule_date_sortie_conservatoire, champ_date_sortie_conservatoire)}
+          {makeTextField(intitule_motif_sortie_conservatoire, champ_motif_sortie_conservatoire)}
+        </Grid>
 
 
       return (
         <Container>
           <Typography component='h1' variant='h3'>Page de l'élève</Typography>
           {infos_eleve}
-          <Typography component='h2' variant='h4'>Informations de cursus</Typography>
+          <br />
+          <Typography component='h2' variant='h5'>Informations de cursus</Typography>
           {infos_cursus}
           <MaterialTable
             title="Classes suivies"
@@ -140,7 +142,7 @@ function makeTextField(f, v) {
 }
 
 function makeDate(d) {
-  if (d){
+  if (d) {
     let tempDate = d.split('^^')[0]
     return (tempDate.split('-')[2] + '/' + tempDate.split('-')[1] + '/' + tempDate.split('-')[0])
   }

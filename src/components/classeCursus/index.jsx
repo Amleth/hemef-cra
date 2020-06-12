@@ -38,7 +38,7 @@ class classeCursus extends React.Component {
       let tablePrix = null
       // let tableInterpretations = null
 
-      //A ADAPTER AVEC LA MAJ API
+
       if (this.state.classeCursusData.prix !== undefined) {
         tablePrix =
               <MaterialTable
@@ -49,7 +49,7 @@ class classeCursus extends React.Component {
                     title: "Date", field: "string",
                     render: (r) => {
                       if (r.prix_année) {
-                       return(r.prix_année)
+                       return(r.prix_année.split("^^")[0])
                       }
                       else if (r.prix_hypothèse_année) {
                         return('[' + r.prix_hypothèse_année.split("^^")[0] + ']')
@@ -108,7 +108,6 @@ class classeCursus extends React.Component {
           <br />
           {infos_parcours}
           <br />
-          Observations : 
           <Box fontStyle='italic'>{observation && <Typography>{observation}</Typography>}</Box>
           <br/>
           {tablePrix}
