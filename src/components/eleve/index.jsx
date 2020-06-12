@@ -101,8 +101,11 @@ class eleve extends React.Component {
           <Typography component='h1' variant='h3'>Page de l'élève</Typography>
           {infos_eleve}
           <br />
+          <br />
           <Typography component='h2' variant='h5'>Informations de cursus</Typography>
           {infos_cursus}
+          <br />
+          <br />
           <MaterialTable
             title="Classes suivies"
             columns={[
