@@ -4,14 +4,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 // import indexVilles from './components/indexVilles'
 // import indexElevesCursus from './components/eleveCursus'
 // import ville from './components/ville'
-// import indexDisciplines from './components/indexDisciplines'
-// import discipline from './components/discipline'
+
 
 import { Typography, Box, Grid, Container, Button, AppBar, Toolbar } from '@material-ui/core'
 import { Home } from '@material-ui/icons';
 import indexEleves from './components/indexEleves'
 import eleve from './components/eleve'
 import classeCursus from './components/classeCursus'
+import indexClasses from './components/indexClasses'
+import classe from './components/classe'
 //a adapter
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Grid item>
               <Box>
                 <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Index Elèves</Button>
+                <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Index Classes</Button>
 
                 {/* <Button color='inherit' component={Link} to="/performers" startIcon={<i className="far fa-user"></i>}>Disciplines</Button>
 
@@ -59,7 +61,7 @@ export default function App() {
                     <Button size='large' variant='contained' color='primary' fullWidth={true} component={Link} to="/index_eleves">Élèves</Button>
                   </Box>
                   <Box width={1 / 2}>
-                    <Button size='large' variant='contained' color='primary' fullWidth={true} >In Progress</Button>
+                    <Button size='large' variant='contained' color='primary' fullWidth={true} component={Link} to="/indexClasses">Classes</Button>
                   </Box>
                 </Grid>
 
@@ -78,14 +80,16 @@ export default function App() {
 
           </Route>
           {/*
-          <Route path='/discipline/:id' children={discipline} />
+          
 
           <Route path='/ville/:id' children={ville} />
-          <Route path='/index_disciplines' children={indexDisciplines} />
+          
           <Route path='/index_villes' children={indexVilles} /> */}
+          <Route path='/classe/:id' children={classe} />
           <Route path='/classe_cursus/:id' children={classeCursus} />
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
+          <Route path='/indexClasses' children={indexClasses} />
         </Switch>
       </div>
     </Router>
