@@ -29,7 +29,8 @@ class indexClasses extends React.Component {
               { title: 'Discipline', field: 'discipline_label' },
               { title : "Professeur", field : 'professeur_label'
               },
-              { title : "Nombre d'élèves", field : 'parcours_classe_count',
+              // Si un tri sur le nombre d'élèves est souhaité, rejouté dans la colonne dédiée au Nombre d'élèves la commande field : 'parcours_classe_count',
+              { title : "Nombre d'élèves", 
               render : row => {
                 let count = row.parcours_classe_count.split("^^")[0]
                 return count
@@ -39,7 +40,9 @@ class indexClasses extends React.Component {
             ]}
             options={{
               pageSize : 20,
-              pageSizeOptions : [10,20,50]
+              pageSizeOptions : [10,20,50],
+              filtering : true,
+              sorting : true
             }}
             data={this.state.ClassesData}
             onRowClick={((evt, selectedRow) => {
