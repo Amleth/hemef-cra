@@ -5,6 +5,7 @@ import {
   Box,
   Grid,
   Container,
+  Button,
   Typography,
   TextField
 } from '@material-ui/core'
@@ -41,28 +42,28 @@ class classeCursus extends React.Component {
 
       if (this.state.classeCursusData.prix !== undefined) {
         tablePrix =
-              <MaterialTable
-                title='Prix Obtenus'
-                columns={[
-                  { title: "Intitulé", field: "prix_nom" },
-                  {
-                    title: "Date", field: "string",
-                    render: (r) => {
-                      if (r.prix_année) {
-                       return(r.prix_année.split("^^")[0])
-                      }
-                      else if (r.prix_hypothèse_année) {
-                        return('[' + r.prix_hypothèse_année.split("^^")[0] + ']')
-                      }
-                    }
-                  },
+          <MaterialTable
+            title='Prix Obtenus'
+            columns={[
+              { title: "Intitulé", field: "prix_nom" },
+              {
+                title: "Date", field: "string",
+                render: (r) => {
+                  if (r.prix_année) {
+                    return (r.prix_année.split("^^")[0])
+                  }
+                  else if (r.prix_hypothèse_année) {
+                    return ('[' + r.prix_hypothèse_année.split("^^")[0] + ']')
+                  }
+                }
+              },
 
-                  { title: "Discipline", field: "prix_discipline_label" }
-                ]}
-                data={this.state.classeCursusData.prix}
-              >
+              { title: "Discipline", field: "prix_discipline_label" }
+            ]}
+            data={this.state.classeCursusData.prix}
+          >
 
-              </MaterialTable>
+          </MaterialTable>
       }
 
       let informations_clés =
@@ -93,13 +94,22 @@ class classeCursus extends React.Component {
       }
 
       const observation = parcours_classe.observations_élève
-      ? parcours_classe.observations_élève
+        ? parcours_classe.observations_élève
           .trim()
           .split(';')
           .map((_) => _.trim())
           .filter((_) => _.length > 0)
           .join(' • ')
-      : ''
+        : ''
+
+      const bouttonAccesClasse = parcours_classe.classe
+        ?
+        <Grid container justify='center' >
+          <Button variant="outlined" color="primary" fullWidth='true' onClick={() => { this.props.history.push('/classe/' + parcours_classe.classe.slice(-36)) }}>Accès à la classe</Button>
+        </Grid>
+
+        : null
+
       return (
         <Container>
           <Typography component='h1' variant='h3'>Parcours Classe</Typography>
@@ -109,7 +119,9 @@ class classeCursus extends React.Component {
           {infos_parcours}
           <br />
           <Box fontStyle='italic'>{observation && <Typography>{observation}</Typography>}</Box>
-          <br/>
+          <br />
+          {bouttonAccesClasse}
+          <br />
           {tablePrix}
         </Container>
       )
