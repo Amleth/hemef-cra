@@ -13,6 +13,9 @@ import eleve from './components/eleve'
 import classeCursus from './components/classeCursus'
 import indexClasses from './components/indexClasses'
 import classe from './components/classe'
+import indexGraphes from './components/indexGraphiques'
+import graphique from './components/graphique'
+
 //a adapter
 export default function App() {
   return (
@@ -30,6 +33,7 @@ export default function App() {
               <Box>
                 <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Index Elèves</Button>
                 <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Index Classes</Button>
+                <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Index Graphiques</Button>
 
                 {/* <Button color='inherit' component={Link} to="/performers" startIcon={<i className="far fa-user"></i>}>Disciplines</Button>
 
@@ -90,6 +94,8 @@ export default function App() {
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
           <Route path='/indexClasses' children={indexClasses} />
+          <Route path='/indexGraphes' children={indexGraphes}/>
+          <Route path='/graphique' children={graphique}/>
         </Switch>
       </div>
     </Router>
