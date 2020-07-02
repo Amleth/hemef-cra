@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-// import indexVilles from './components/indexVilles'
+
 // import indexElevesCursus from './components/eleveCursus'
 // import ville from './components/ville'
 
@@ -15,6 +15,7 @@ import indexClasses from './components/indexClasses'
 import classe from './components/classe'
 import indexGraphes from './components/indexGraphiques'
 import graphique from './components/graphique'
+import indexVilles from './components/indexVilles'
 
 //a adapter
 export default function App() {
@@ -33,7 +34,9 @@ export default function App() {
               <Box>
                 <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Index Elèves</Button>
                 <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Index Classes</Button>
+                <Button color='inherit' component={Link} to="/indexVilles" startIcon={<i className="fas fa-city"></i>}>Index des Villes</Button>
                 <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Index Graphiques</Button>
+                
 
                 {/* <Button color='inherit' component={Link} to="/performers" startIcon={<i className="far fa-user"></i>}>Disciplines</Button>
 
@@ -94,6 +97,7 @@ export default function App() {
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
           <Route path='/indexClasses' children={indexClasses} />
+          <Route path='/indexVilles' children={indexVilles}/>
           <Route path='/indexGraphes' children={indexGraphes}/>
           <Route path='/graphique' children={graphique}/>
         </Switch>
