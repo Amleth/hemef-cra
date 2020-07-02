@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 
 // import indexElevesCursus from './components/eleveCursus'
-// import ville from './components/ville'
+
 
 
 import { Typography, Box, Grid, Container, Button, AppBar, Toolbar } from '@material-ui/core'
@@ -16,6 +16,7 @@ import classe from './components/classe'
 import indexGraphes from './components/indexGraphiques'
 import graphique from './components/graphique'
 import indexVilles from './components/indexVilles'
+import ville from './components/ville'
 
 //a adapter
 export default function App() {
@@ -98,6 +99,7 @@ export default function App() {
           <Route path='/eleve/:id' children={eleve} />
           <Route path='/indexClasses' children={indexClasses} />
           <Route path='/indexVilles' children={indexVilles}/>
+          <Route path='/ville/:id ' children={ville}/>
           <Route path='/indexGraphes' children={indexGraphes}/>
           <Route path='/graphique' children={graphique}/>
         </Switch>

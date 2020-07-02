@@ -34,10 +34,11 @@ class indexVilles extends React.Component {
               pageSizeOptions: [10, 20, 50]
             }}
             data={this.state.cityData}
-            // onRowClick={((evt, selectedRow) => {
-            //   const workId = selectedRow.work.slice(-36)
-            //   this.props.history.push('/work/'+workId)
-            // })}
+            onRowClick={((evt, selectedRow) => {
+              const id = selectedRow.ville.slice(-36)
+              console.log(id)
+              this.props.history.push('/ville/'+id)
+            })}
           >
           </MaterialTable>
         </div>

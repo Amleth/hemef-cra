@@ -95,7 +95,6 @@ class eleve extends React.Component {
           {makeTextField(intitule_motif_sortie_conservatoire, champ_motif_sortie_conservatoire)}
         </Grid>
 
-
       return (
         <Container>
           <Typography component='h1' variant='h3'>Page de l'élève</Typography>
