@@ -26,7 +26,7 @@ class indexVilles extends React.Component {
           <MaterialTable
             title='Liste des villes'
             columns={[
-              { title: 'Nom', field: 'pays_label' },
+              { title: 'Nom', field: 'ville_label' },
               { title: 'Département', field : 'département_label'},
             ]}
             options={{
