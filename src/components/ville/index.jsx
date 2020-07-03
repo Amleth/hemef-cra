@@ -43,33 +43,38 @@ class ville extends React.Component {
           </Grid>
       }
       let tableau = null
-      if(ville.élèves){
-        tableau = <MaterialTable 
-        title='Ville de naissance de :'
-            columns={[
-              { title: 'Nom', field: 'élève_nom' },
-              { title: 'Prénom', field: 'élève_prénom' },
-              { title: 'Cote', field: 'élève_cote_AN_registre' },
-              { title: 'Sexe', field : 'élève_sexe'},
-              // { title: 'pseudonyme', field : 'élève_sexe'}, a continuer
-            ]}
-            options={{
-              pageSize: 20,
-              pageSizeOptions: [10, 20, 50]
-            }}
-            data={ville.élèves}
-            onRowClick={((evt, selectedRow) => {
-              const id = selectedRow.élève.slice(-36)
-              this.props.history.push('/eleve/'+id)
-            })}>
-          
+      if (ville.élèves) {
+        tableau = <MaterialTable
+          title='Ville de naissance de :'
+          columns={[
+            { title: 'Nom', field: 'élève_nom' },
+            { title: 'Prénom', field: 'élève_prénom' },
+            { title: 'Cote', field: 'élève_cote_AN_registre' },
+            { title: 'Sexe', field: 'élève_sexe' },
+            {
+              title: 'pseudonyme', field: 'élève_pseudonyme', render: row => { 
+                if(row.élève_pseudonyme)
+                  return row.élève_pseudonyme ;
+                else return ('')}
+            }
+          ]}
+          options={{
+            pageSize: 20,
+            pageSizeOptions: [10, 20, 50]
+          }}
+          data={ville.élèves}
+          onRowClick={((evt, selectedRow) => {
+            const id = selectedRow.élève.slice(-36)
+            this.props.history.push('/eleve/' + id)
+          })}>
+
         </MaterialTable>
       }
       return (<Container>
         <Typography component='h1' variant='h3'>{this.state.cityData.ville_label}</Typography>
         {infoVille}
-        <br/>
-        <br/>
+        <br />
+        <br />
         {tableau}
       </Container>)
     }
