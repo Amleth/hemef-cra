@@ -37,11 +37,6 @@ export default function App() {
                 <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Index Classes</Button>
                 <Button color='inherit' component={Link} to="/indexVilles" startIcon={<i className="fas fa-city"></i>}>Index des Villes</Button>
                 <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Index Graphiques</Button>
-                
-
-                {/* <Button color='inherit' component={Link} to="/performers" startIcon={<i className="far fa-user"></i>}>Disciplines</Button>
-
-                <Button color='inherit' component={Link} to="/identified_works" startIcon={<i className="fas fa-music"></i>}>Villes</Button> */}
               </Box>
             </Grid>
 
@@ -87,19 +82,14 @@ export default function App() {
             </Container>
 
           </Route>
-          {/*
-          
 
-          <Route path='/ville/:id' children={ville} />
-          
-          <Route path='/index_villes' children={indexVilles} /> */}
           <Route path='/classe/:id' children={classe} />
           <Route path='/classe_cursus/:id' children={classeCursus} />
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
           <Route path='/indexClasses' children={indexClasses} />
           <Route path='/indexVilles' children={indexVilles}/>
-          <Route path='/ville/:id ' children={ville}/>
+          <Route path='/ville/:id' children={ville}/>
           <Route path='/indexGraphes' children={indexGraphes}/>
           <Route path='/graphique' children={graphique}/>
         </Switch>

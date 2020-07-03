@@ -3,8 +3,6 @@ import MaterialTable from 'material-table'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 
-// this.props.history.push("/musician/133c5242-11de-419f-b6bf-3b61170a20d2")
-
 class indexEleves extends React.Component {
   constructor(props) {
     super(props)
