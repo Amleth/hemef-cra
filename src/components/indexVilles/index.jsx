@@ -36,7 +36,6 @@ class indexVilles extends React.Component {
             data={this.state.cityData}
             onRowClick={((evt, selectedRow) => {
               const id = selectedRow.ville.slice(-36)
-              console.log(id)
               this.props.history.push('/ville/'+id)
             })}
           >
