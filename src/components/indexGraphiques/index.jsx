@@ -11,7 +11,7 @@ class indexGraphiques extends React.Component {
         const list =
             <List>
                 <ListItem key ={1}>
-                    <Link key = {1} href={'/graphique'}>graphe test</Link>
+                    <Link key = {1} href={'/graph_sexe_discipline'}>Répartition sexuée des disciplines</Link>
                 </ListItem>
             </List>
 

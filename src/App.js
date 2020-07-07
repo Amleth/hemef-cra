@@ -14,7 +14,7 @@ import classeCursus from './components/classeCursus'
 import indexClasses from './components/indexClasses'
 import classe from './components/classe'
 import indexGraphes from './components/indexGraphiques'
-import graphique from './components/graphique'
+import graph_sexe_discipline from './components/graph_sexe_discipline'
 import indexVilles from './components/indexVilles'
 import ville from './components/ville'
 
@@ -91,7 +91,7 @@ export default function App() {
           <Route path='/indexVilles' children={indexVilles}/>
           <Route path='/ville/:id' children={ville}/>
           <Route path='/indexGraphes' children={indexGraphes}/>
-          <Route path='/graphique' children={graphique}/>
+          <Route path='/graph_sexe_discipline' children={graph_sexe_discipline}/>
         </Switch>
       </div>
     </Router>
