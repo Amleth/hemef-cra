@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
-    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { Typography, Container } from '@material-ui/core'
+import { Typography, Container, Button } from '@material-ui/core'
 
 class graph_sexe_discipline extends PureComponent {
 
@@ -38,10 +38,10 @@ class graph_sexe_discipline extends PureComponent {
 
     render() {
         if (!this.state.data) {
-          return <div>Données en cours de téléchargement...</div>
+            return <div>Données en cours de téléchargement...</div>
         }
         else {
-            const data = this.state.data
+            // let data = this.state.data
 
             const CustomTooltip = ({ active, payload, label }) => {
                 if (active) {
@@ -59,28 +59,40 @@ class graph_sexe_discipline extends PureComponent {
             return (
                 <Container>
                     <Typography component='h1' variant='h4'>Répartition sexuée des disciplines</Typography>
-                    <BarChart
-                        width={1250}
-                        height={700}
-                        data={data}
-                        margin={{
-                            top: 20, right: 30, left: 20, bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="discipline" height={160} angle={-45} textAnchor="end" interval={0} />
-                        <YAxis />
-                        <Tooltip content={<CustomTooltip />} />
-                        <Legend />
-                        <Bar dataKey="Homme" stackId="a" fill="#34c3eb" />
-                        <Bar dataKey="Femme" stackId="a" fill="#eba234" />
-                    </BarChart>
+                    {
+                    /* BOUTTONS CENSÉS GÉRER LE TRI DES DONNÉES 
+                    
+                    <Button variant="outlined" color="primary" onClick={() => {
+                        this.setState({ data: this.state.data.sort(compareName) });
+                    }}>
+                        Tri par nom
+                    </Button>
+                    <Button variant="outlined" color="primary" onClick={() => {
+                        this.setState({ data: this.state.data.sort(compareInscrits) });
+                    }}>
+                        Tri par nombre d'élèves
+                    </Button> */}
+                    <ResponsiveContainer width="100%" height={800}>
+                        <BarChart
+                            data={this.state.data}
+                            margin={{
+                                top: 5, right: 5, left: 5, bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="discipline" height={190} angle={-55} textAnchor="end" interval={0} />
+                            <YAxis />
+                            <Tooltip content={<CustomTooltip />}/>
+                            <Legend />
+                            <Bar dataKey="Homme" stackId="a" fill="#34c3eb" />
+                            <Bar dataKey="Femme" stackId="a" fill="#eba234" />
+                        </BarChart>
+                    </ResponsiveContainer>
                 </Container>
             );
         }
     }
 }
-
 
 export default withRouter(graph_sexe_discipline)
 
