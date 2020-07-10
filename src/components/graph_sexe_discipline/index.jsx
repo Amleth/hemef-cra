@@ -19,7 +19,7 @@ class graph_sexe_discipline extends PureComponent {
         axios.get('http://data-iremus.huma-num.fr/api/hemef/stats/sexe_discipline').then(res => {
             const puredata = res.data
             let newdata = []
-            console.log(puredata)
+            // console.log(puredata)
             for (const [key, value] of Object.entries(puredata)) {
                 // console.log(key)
                 let tempObj = {}
@@ -30,6 +30,7 @@ class graph_sexe_discipline extends PureComponent {
                     newdata.push(tempObj)
             }
             console.log(newdata)
+            newdata.sort(compareInscrits)
             this.setState({ data: newdata })
         }
         )
@@ -79,3 +80,31 @@ class graph_sexe_discipline extends PureComponent {
 }
 
 export default withRouter(graph_sexe_discipline)
+
+function compareName(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const discA = a.discipline.toUpperCase();
+    const discB = b.discipline.toUpperCase();
+  
+    let comparison = 0;
+    if (discA > discB) {
+      comparison = 1;
+    } else if (discA < discB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+  
+  function compareInscrits(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const discA = Number(a.total);
+    const discB = Number(b.total);
+  
+    let comparison = 0;
+    if (discA > discB) {
+      comparison = 1;
+    } else if (discA < discB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
