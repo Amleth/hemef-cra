@@ -1,8 +1,6 @@
 import React from 'react'
 import { Typography, List, Link, ListItem, Container } from '@material-ui/core'
-import MaterialTable from 'material-table'
 import { withRouter } from 'react-router'
-import axios from 'axios'
 
 class indexGraphiques extends React.Component {
 

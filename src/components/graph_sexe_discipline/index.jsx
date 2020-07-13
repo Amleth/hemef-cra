@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
-    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { Typography, Container, Button, Grid, CircularProgress } from '@material-ui/core'
 

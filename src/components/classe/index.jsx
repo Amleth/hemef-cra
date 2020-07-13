@@ -3,7 +3,6 @@ import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
   CircularProgress,
-  Box,
   Grid,
   Container,
   TextField,
