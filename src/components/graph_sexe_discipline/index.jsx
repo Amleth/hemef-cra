@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
     BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { Typography, Container, Button } from '@material-ui/core'
+import { Typography, Container, Button, Grid } from '@material-ui/core'
 
-class graph_sexe_discipline extends PureComponent {
+class graph_sexe_discipline extends Component {
 
     constructor(props) {
         super(props)
@@ -59,20 +59,25 @@ class graph_sexe_discipline extends PureComponent {
             return (
                 <Container>
                     <Typography component='h1' variant='h4'>Répartition sexuée des disciplines</Typography>
-                    {
-                    /* BOUTTONS CENSÉS GÉRER LE TRI DES DONNÉES 
-                    
-                    <Button variant="outlined" color="primary" onClick={() => {
-                        this.setState({ data: this.state.data.sort(compareName) });
-                    }}>
-                        Tri par nom
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                        alignItems="center"
+                    >
+                        <Button variant="outlined" color="primary" onClick={() => {
+                            this.setState({ data: this.state.data.sort(compareName) });
+                        }}>
+                            Tri par nom
                     </Button>
-                    <Button variant="outlined" color="primary" onClick={() => {
-                        this.setState({ data: this.state.data.sort(compareInscrits) });
-                    }}>
-                        Tri par nombre d'élèves
-                    </Button> */}
-                    <ResponsiveContainer width="100%" height={800}>
+                        <Button variant="outlined" color="primary" onClick={() => {
+                            this.setState({ data: this.state.data.sort(compareInscrits) });
+                        }}>
+                            Tri par nombre d'élèves
+                    </Button>
+                    </Grid>
+
+                    <ResponsiveContainer width="110%" height={1000}>
                         <BarChart
                             data={this.state.data}
                             margin={{
@@ -80,9 +85,9 @@ class graph_sexe_discipline extends PureComponent {
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="discipline" height={190} angle={-55} textAnchor="end" interval={0} />
+                            <XAxis dataKey="discipline" height={190} angle={-60} textAnchor="end" interval={0} />
                             <YAxis />
-                            <Tooltip content={<CustomTooltip />}/>
+                            <Tooltip content={<CustomTooltip />} />
                             <Legend />
                             <Bar dataKey="Homme" stackId="a" fill="#34c3eb" />
                             <Bar dataKey="Femme" stackId="a" fill="#eba234" />
