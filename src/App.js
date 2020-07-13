@@ -17,6 +17,7 @@ import indexGraphes from './components/indexGraphiques'
 import graph_sexe_discipline from './components/graph_sexe_discipline'
 import indexVilles from './components/indexVilles'
 import ville from './components/ville'
+import home from './components/Home'
 
 //a adapter
 export default function App() {
@@ -38,39 +39,7 @@ export default function App() {
       <Box m={2} />
       <div>
         <Switch>
-          <Route exact path='/'>
-            <Container maxWidth="md">
-              <Grid container justify="center">
-                <Typography variant="h2" component="h1" align="center">
-                  HEMEF
-              </Typography>
-              </Grid>
-              <Box m={5} />
-              <Grid container justify="space-between" direction='column'>
-                <Grid container justify="space-between">
-                  <Box width={1 / 2}>
-                    <Button size='large' variant='contained' color='primary' fullWidth={true} component={Link} to="/index_eleves">Élèves</Button>
-                  </Box>
-                  <Box width={1 / 2}>
-                    <Button size='large' variant='contained' color='primary' fullWidth={true} component={Link} to="/indexClasses">Classes</Button>
-                  </Box>
-                </Grid>
-
-                <Grid container justify="space-between">
-                  <Box width={1 / 2}>
-                    <Button size='large' variant='contained' color='primary' fullWidth={true}>In Progress</Button>
-                  </Box>
-                  <Box width={1 / 2}>
-                    <Button size='large' variant='contained' color='primary' fullWidth={true} >In Progress</Button>
-                  </Box>
-                </Grid>
-              </Grid>
-              <Box m={5} />
-
-            </Container>
-
-          </Route>
-
+          <Route exact path='/' children={home} />
           <Route path='/classe/:id' children={classe} />
           <Route path='/classe_cursus/:id' children={classeCursus} />
           <Route path='/index_eleves' children={indexEleves} />
