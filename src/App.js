@@ -24,26 +24,14 @@ export default function App() {
     <Router>
       <AppBar position="static">
         <Toolbar>
-          <Grid container justify="space-between" direction='row' alignItems="center" >
-            <Grid item>
-              <Button edge="start" color="inherit" aria-label="home" component={Link} to="/" startIcon={<Home />}>
-                Home
-          </Button>
-            </Grid>
-
-            <Grid item>
-              <Box>
+          <Grid container justify="center" direction='row' alignItems="center" >
+                <Button edge="center" color="inherit" aria-label="home" component={Link} to="/" startIcon={<Home />}>
+                  Acceuil
+                </Button>
                 <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Index Elèves</Button>
                 <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Index Classes</Button>
                 <Button color='inherit' component={Link} to="/indexVilles" startIcon={<i className="fas fa-city"></i>}>Index des Villes</Button>
                 <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Index Graphiques</Button>
-              </Box>
-            </Grid>
-
-            <Grid item>
-
-            </Grid>
-
           </Grid>
         </Toolbar>
       </AppBar>
@@ -88,10 +76,10 @@ export default function App() {
           <Route path='/index_eleves' children={indexEleves} />
           <Route path='/eleve/:id' children={eleve} />
           <Route path='/indexClasses' children={indexClasses} />
-          <Route path='/indexVilles' children={indexVilles}/>
-          <Route path='/ville/:id' children={ville}/>
-          <Route path='/indexGraphes' children={indexGraphes}/>
-          <Route path='/graph_sexe_discipline' children={graph_sexe_discipline}/>
+          <Route path='/indexVilles' children={indexVilles} />
+          <Route path='/ville/:id' children={ville} />
+          <Route path='/indexGraphes' children={indexGraphes} />
+          <Route path='/graph_sexe_discipline' children={graph_sexe_discipline} />
         </Switch>
       </div>
     </Router>
