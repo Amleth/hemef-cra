@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
+  CircularProgress,
   Box,
   Grid,
   Container,
@@ -25,7 +26,9 @@ class classe extends React.Component {
 
   render() {
     if (!this.state.classeData) {
-      return <div>Rien…</div>
+      return (<Container maxWidth='md' align='center'>
+      <CircularProgress />
+    </Container>)
     } else {
       return (
         <Container>

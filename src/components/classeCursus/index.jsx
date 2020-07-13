@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
+  CircularProgress,
   Box,
   Grid,
   Container,
@@ -31,7 +32,9 @@ class classeCursus extends React.Component {
 
   render() {
     if (!this.state.classeCursusData) {
-      return <div>Données en cours de téléchargement...</div>
+      return (<Container maxWidth='md' align='center'>
+      <CircularProgress />
+    </Container>)
     } else {
       console.log('données : ')
       console.log(this.state.classeCursusData)

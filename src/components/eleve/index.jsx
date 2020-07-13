@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import {
+  CircularProgress,
   Grid,
   TextField,
   Container,
@@ -29,7 +30,9 @@ class eleve extends React.Component {
 
   render() {
     if (!this.state.eleveData) {
-      return <div>Données en cours de téléchargement...</div>
+      return (<Container maxWidth='md' align='center'>
+      <CircularProgress />
+    </Container>)
     } else {
       //affichage conditionnel pour le champ date de sortie
       let eleve = this.state.eleveData

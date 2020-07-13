@@ -4,7 +4,7 @@ import axios from 'axios'
 import {
     BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { Typography, Container, Button, Grid } from '@material-ui/core'
+import { Typography, Container, Button, Grid, CircularProgress } from '@material-ui/core'
 
 class graph_sexe_discipline extends Component {
 
@@ -38,7 +38,9 @@ class graph_sexe_discipline extends Component {
 
     render() {
         if (!this.state.data) {
-            return <div>Données en cours de téléchargement...</div>
+            return (<Container maxWidth='md' align='center'>
+            <CircularProgress />
+          </Container>)
         }
         else {
             // let data = this.state.data

@@ -5,7 +5,8 @@ import {
   Container,
   Typography,
   Grid,
-  TextField
+  TextField,
+  CircularProgress
 } from '@material-ui/core'
 import MaterialTable from 'material-table'
 
@@ -27,7 +28,9 @@ class ville extends React.Component {
   }
   render() {
     if (!this.state.cityData) {
-      return <div>Données en cours de téléchargement...</div>
+      return (<Container maxWidth='md' align='center'>
+      <CircularProgress />
+    </Container>)
     } else {
       let ville = this.state.cityData
       let infoVille = null

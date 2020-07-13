@@ -2,6 +2,7 @@ import React from 'react'
 import MaterialTable from 'material-table'
 import { withRouter } from 'react-router'
 import axios from 'axios'
+import { CircularProgress,Container } from '@material-ui/core'
 
 class indexClasses extends React.Component {
   constructor(props) {
@@ -19,7 +20,9 @@ class indexClasses extends React.Component {
 
   render() {
     if (!this.state.ClassesData) {
-      return <div>Données en cours de téléchargement...</div>
+      return (<Container maxWidth='md' align='center'>
+      <CircularProgress />
+    </Container>)
     } else {
       return (
         <div style={{ maxWidth: '100%' }}>
