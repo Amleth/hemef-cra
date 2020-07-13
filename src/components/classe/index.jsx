@@ -54,6 +54,12 @@ class classe extends React.Component {
                 field: "élève_cote_AN_registre"
               },
             ]}
+            options={{
+              pageSize: 5,
+              pageSizeOptions: [5, 10, 20],
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+            }}
             data={this.state.classeData.élèves}
             onRowClick={((evt, selectedRow) => {
               const eleveId = selectedRow.élève.slice(-36)

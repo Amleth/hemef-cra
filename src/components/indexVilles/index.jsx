@@ -34,7 +34,9 @@ class indexVilles extends React.Component {
             ]}
             options={{
               pageSize: 20,
-              pageSizeOptions: [10, 20, 50]
+              pageSizeOptions: [10, 20, 50],
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
             }}
             data={this.state.cityData}
             onRowClick={((evt, selectedRow) => {

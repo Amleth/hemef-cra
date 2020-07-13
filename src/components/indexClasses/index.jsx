@@ -45,7 +45,9 @@ class indexClasses extends React.Component {
               pageSize : 20,
               pageSizeOptions : [10,20,50],
               filtering : true,
-              sorting : true
+              sorting : true,
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
             }}
             data={this.state.ClassesData}
             onRowClick={((evt, selectedRow) => {

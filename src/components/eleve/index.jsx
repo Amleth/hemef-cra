@@ -120,6 +120,12 @@ class eleve extends React.Component {
                 }
               }
             ]}
+            options={{
+              pageSize: 5,
+              pageSizeOptions: [5, 10, 20],
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+            }}
             data={this.state.eleveData.parcours}
             onRowClick={(evt, selectedRow) => {
               const parcoursClasseID = selectedRow.parcours.slice(-36)

@@ -62,8 +62,10 @@ class ville extends React.Component {
             }
           ]}
           options={{
-            pageSize: 20,
-            pageSizeOptions: [10, 20, 50]
+            pageSize: 10,
+            pageSizeOptions: [5, 10, 20],
+            cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+            headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
           }}
           data={ville.élèves}
           onRowClick={((evt, selectedRow) => {

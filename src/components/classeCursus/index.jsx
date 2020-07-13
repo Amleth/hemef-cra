@@ -63,6 +63,12 @@ class classeCursus extends React.Component {
 
               { title: "Discipline", field: "prix_discipline_label" }
             ]}
+            options={{
+              pageSize: 5,
+              pageSizeOptions: [5, 10, 20],
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+            }}
             data={this.state.classeCursusData.prix}
           >
 
