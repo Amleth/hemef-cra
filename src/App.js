@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 
 
-import { Typography, Box, Grid, Container, Button, AppBar, Toolbar } from '@material-ui/core'
+import { Box, Grid, Button, AppBar, Toolbar } from '@material-ui/core'
 import { Home } from '@material-ui/icons';
 import indexEleves from './components/indexEleves'
 import eleve from './components/eleve'
@@ -17,6 +17,7 @@ import indexGraphes from './components/indexGraphiques'
 import graph_sexe_discipline from './components/graph_sexe_discipline'
 import indexVilles from './components/indexVilles'
 import ville from './components/ville'
+import prix from './components/prix'
 import home from './components/Home'
 
 //a adapter
@@ -31,6 +32,7 @@ export default function App() {
                 </Button>
                 <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Elèves</Button>
                 <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Classes</Button>
+                <Button color='inherit' component={Link} to="/prix" startIcon={<i className="fas fa-award"></i>}>Prix</Button>
                 <Button color='inherit' component={Link} to="/indexVilles" startIcon={<i className="fas fa-city"></i>}>Villes</Button>
                 <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Statistiques</Button>
           </Grid>
@@ -49,6 +51,7 @@ export default function App() {
           <Route path='/ville/:id' children={ville} />
           <Route path='/indexGraphes' children={indexGraphes} />
           <Route path='/graph_sexe_discipline' children={graph_sexe_discipline} />
+          <Route path='/prix' children={prix} />
         </Switch>
       </div>
     </Router>
