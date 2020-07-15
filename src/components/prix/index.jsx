@@ -11,10 +11,22 @@ class prix extends React.Component {
             prixData: [],
         }
     }
-    //a adapter
     componentDidMount() {
         axios.get('http://data-iremus.huma-num.fr/api/hemef/prix').then(res => {
-            this.setState({ prixData: res.data })
+            const initData = res.data
+            let dataArray = []
+            for (const o of initData){
+                if(!o.année){
+                    if (o.année_hypothèse) {
+                        o.année = o.année_hypothèse.split('-')[0] + ' (hypothèse)'
+                    }
+                }
+                else {
+                    o.année = o.année.split('^^')[0]
+                }
+            dataArray.push(o)
+            }
+            this.setState({ prixData: dataArray})
         })
     }
 
@@ -31,15 +43,7 @@ class prix extends React.Component {
                         columns={[
                             { title: 'Nom du prix', field: 'nom_label' },
                             { title: 'Discipline', field: 'discipline_label' },
-                            { title: "Année d'attribution", render: (r)=>{
-                                if (r.année){
-                                    return r.année.split('^^')[0]
-                                }
-                                else if (r.année_hypothèse){
-                                    return (r.année_hypothèse.split('-')[0] + ' (hypothèse)')
-                                }
-                            },
-                            sorting: false},
+                            { title: "Année d'attribution", field: 'année'},
                             { title: 'Prénom lauréat.e', field: 'élève_prénom' },
                             { title: 'Nom lauréat.e', field: 'élève_nom' },
                             { title: 'Cote AN du registre lauréat.e', field: 'élève_cote_AN_registre' },
