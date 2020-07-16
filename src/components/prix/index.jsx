@@ -21,6 +21,7 @@ function Prix({ history }) {
     const [prixData, setData] = useState([])
     const [nameP, setNomPrix] = useState('')
     const [discP, setDisciplinePrix] = useState('')
+    const [yearP, setAnneePrix] = useState('')
 
     async function fetchData() {
         const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/prix')
@@ -50,6 +51,10 @@ function Prix({ history }) {
         setDisciplinePrix(event.target.value)
     }
 
+    const handleAnneePrixChange = (event) => {
+        setAnneePrix(event.target.value)
+    }
+
     let nomPrix = prixData.map((_) => _.nom_label).map((_) => (_ ? _.toLowerCase() : ''))
     let n = {}
     for (let s of nomPrix) n[s] = null
@@ -61,6 +66,13 @@ function Prix({ history }) {
     let d = {}
     for (let s of disciplinePrix) d[s] = null
     disciplinePrix = Object.keys(d)
+        .filter((s) => s.length > 0)
+        .sort()
+
+    let anneePrix = prixData.map((_) => _.année).map((_) => (_ ? _.toLowerCase() : ''))
+    let a = {}
+    for (let s of anneePrix) a[s] = null
+    anneePrix = Object.keys(a)
         .filter((s) => s.length > 0)
         .sort()
 
@@ -112,13 +124,32 @@ function Prix({ history }) {
                     </Select>
                 </FormControl>
 
+                <FormControl className={classes.formControl}>
+                    <InputLabel id='type-select-label'>Années de Prix</InputLabel>
+                    <Select
+                        labelId='nom-select-label'
+                        id='nom-select'
+                        onChange={handleAnneePrixChange}
+                        value={yearP}
+                    >
+                        <MenuItem value=''>
+                            <em>Pas de filtre</em>
+                        </MenuItem>
+                        {anneePrix.map((s) => (
+                            <MenuItem key={s} value={s}>
+                                {s}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
                 <div style={{ maxWidth: '100%' }}>
                     <MaterialTable
                         title='Liste des prix recensés'
                         columns={[
                             { title: 'Nom du prix', field: 'nom_label', defaultFilter: nameP },
                             { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
-                            { title: "Année d'attribution", field: 'année' },
+                            { title: "Année d'attribution", field: 'année', defaultFilter: yearP },
                             { title: 'Prénom lauréat.e', field: 'élève_prénom' },
                             { title: 'Nom lauréat.e', field: 'élève_nom' },
                             { title: 'Cote AN du registre lauréat.e', field: 'élève_cote_AN_registre' },
