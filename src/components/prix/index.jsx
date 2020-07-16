@@ -15,16 +15,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function Prix({history}) {
+function Prix({ history }) {
 
     const classes = useStyles()
     const [prixData, setData] = useState([])
     const [nameP, setNomPrix] = useState('')
+    const [discP, setDisciplinePrix] = useState('')
 
     async function fetchData() {
         const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/prix')
         res.json().then((res) => {
-            console.log(res)
             const initData = res
             let dataArray = []
             for (const o of initData) {
@@ -46,23 +46,34 @@ function Prix({history}) {
         setNomPrix(event.target.value)
     }
 
+    const handleDisciplinePrixChange = (event) => {
+        setDisciplinePrix(event.target.value)
+    }
+
     let nomPrix = prixData.map((_) => _.nom_label).map((_) => (_ ? _.toLowerCase() : ''))
-    let o = {}
-    for (let s of nomPrix) o[s] = null
-    nomPrix = Object.keys(o)
+    let n = {}
+    for (let s of nomPrix) n[s] = null
+    nomPrix = Object.keys(n)
         .filter((s) => s.length > 0)
         .sort()
 
-        useEffect(() => {
-            fetchData()
-          }, [])
+    let disciplinePrix = prixData.map((_) => _.discipline_label).map((_) => (_ ? _.toLowerCase() : ''))
+    let d = {}
+    for (let s of disciplinePrix) d[s] = null
+    disciplinePrix = Object.keys(d)
+        .filter((s) => s.length > 0)
+        .sort()
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     return prixData.length === 0 ? (
         <Container maxWidth='md' align='center'>
             <CircularProgress />
         </Container>
     ) : (
-        <>
+            <>
                 <FormControl className={classes.formControl}>
                     <InputLabel id='type-select-label'>Noms de Prix</InputLabel>
                     <Select
@@ -82,12 +93,31 @@ function Prix({history}) {
                     </Select>
                 </FormControl>
 
+                <FormControl className={classes.formControl}>
+                    <InputLabel id='type-select-label'>Disciplines de Prix</InputLabel>
+                    <Select
+                        labelId='nom-select-label'
+                        id='nom-select'
+                        onChange={handleDisciplinePrixChange}
+                        value={discP}
+                    >
+                        <MenuItem value=''>
+                            <em>Pas de filtre</em>
+                        </MenuItem>
+                        {disciplinePrix.map((s) => (
+                            <MenuItem key={s} value={s}>
+                                {s}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
                 <div style={{ maxWidth: '100%' }}>
                     <MaterialTable
                         title='Liste des prix recensés'
                         columns={[
-                            { title: 'Nom du prix', field: 'nom_label', defaultFilter: nameP},
-                            { title: 'Discipline', field: 'discipline_label' },
+                            { title: 'Nom du prix', field: 'nom_label', defaultFilter: nameP },
+                            { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
                             { title: "Année d'attribution", field: 'année' },
                             { title: 'Prénom lauréat.e', field: 'élève_prénom' },
                             { title: 'Nom lauréat.e', field: 'élève_nom' },
@@ -111,7 +141,7 @@ function Prix({history}) {
                     </MaterialTable>
                 </div>
             </>
-    )
+        )
 }
 
 export default withRouter(Prix)
