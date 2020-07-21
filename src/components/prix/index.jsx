@@ -20,6 +20,7 @@ function Prix({ history }) {
     const classes = useStyles()
     const [prixData, setData] = useState([])
     const [nameP, setNomPrix] = useState('')
+    const [typeP, setTypePrix] = useState('')
     const [discP, setDisciplinePrix] = useState('')
     const [yearP, setAnneePrix] = useState('')
 
@@ -51,6 +52,10 @@ function Prix({ history }) {
         setDisciplinePrix(event.target.value)
     }
 
+    const handleTypePrixChange = (event) => {
+        setTypePrix(event.target.value)
+    }
+
     const handleAnneePrixChange = (event) => {
         setAnneePrix(event.target.value)
     }
@@ -76,6 +81,13 @@ function Prix({ history }) {
         .filter((s) => s.length > 0)
         .sort()
 
+    let typePrix = prixData.map((_) => _.type_label).map((_) => (_ ? _.toLowerCase() : ''))
+    let t = {}
+    for (let s of typePrix) t[s] = null
+    typePrix = Object.keys(t)
+        .filter((s) => s.length > 0)
+        .sort()
+
     useEffect(() => {
         fetchData()
     }, [])
@@ -87,7 +99,7 @@ function Prix({ history }) {
     ) : (
             <>
                 <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Noms de Prix</InputLabel>
+                    <InputLabel id='type-select-label'>Nom de Prix</InputLabel>
                     <Select
                         labelId='nom-select-label'
                         id='nom-select'
@@ -106,7 +118,26 @@ function Prix({ history }) {
                 </FormControl>
 
                 <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Disciplines de Prix</InputLabel>
+                    <InputLabel id='type-select-label'>Type de Prix</InputLabel>
+                    <Select
+                        labelId='nom-select-label'
+                        id='nom-select'
+                        onChange={handleTypePrixChange}
+                        value={typeP}
+                    >
+                        <MenuItem value=''>
+                            <em>Pas de filtre</em>
+                        </MenuItem>
+                        {typePrix.map((s) => (
+                            <MenuItem key={s} value={s}>
+                                {s}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl className={classes.formControl}>
+                    <InputLabel id='type-select-label'>Discipline de Prix</InputLabel>
                     <Select
                         labelId='nom-select-label'
                         id='nom-select'
@@ -125,7 +156,7 @@ function Prix({ history }) {
                 </FormControl>
 
                 <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Années de Prix</InputLabel>
+                    <InputLabel id='type-select-label'>Année de Prix</InputLabel>
                     <Select
                         labelId='nom-select-label'
                         id='nom-select'
@@ -147,7 +178,8 @@ function Prix({ history }) {
                     <MaterialTable
                         title='Liste des prix recensés'
                         columns={[
-                            { title: 'Nom du prix', field: 'nom_label', defaultFilter: nameP },
+                            { title: 'Nom', field: 'nom_label', defaultFilter: nameP },
+                            { title: 'Type', field: 'type_label', defaultFilter: typeP},
                             { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
                             { title: "Année d'attribution", field: 'année', defaultFilter: yearP },
                             { title: 'Prénom lauréat.e', field: 'élève_prénom' },
