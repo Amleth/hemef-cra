@@ -48,7 +48,7 @@ class classeCursus extends React.Component {
           <MaterialTable
             title='Prix Obtenus'
             columns={[
-              { title: "Intitulé", field: "prix_nom" },
+              { title: "Intitulé", field: "prix_nom_label" },
               {
                 title: "Date", field: "string",
                 render: (r) => {
