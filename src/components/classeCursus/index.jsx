@@ -44,7 +44,49 @@ class classeCursus extends React.Component {
 
 
       if (this.state.classeCursusData.prix !== undefined) {
-        tablePrix =
+        let verifcomplement = false
+        for (let p of this.state.classeCursusData.prix){
+          if(p.prix_complément_nom_prix_label !== undefined){
+            verifcomplement = true
+          }
+        }
+        if(verifcomplement){
+          tablePrix =
+          <MaterialTable
+            title='Prix Obtenus'
+            columns={[
+              { title: "Intitulé", field: "prix_nom_label" },
+              {
+                title: "Date", field: "string",
+                render: (r) => {
+                  if (r.prix_année) {
+                    return (r.prix_année.split("^^")[0])
+                  }
+                  else if (r.prix_hypothèse_année) {
+                    return ('[' + r.prix_hypothèse_année.split("^^")[0] + ']')
+                  }
+                }
+              },
+
+              { title: "Discipline", field: "prix_discipline_label" },
+              { title: "Complément", field: "prix_complément_nom_prix_label" }
+            ]}
+            options={{
+              pageSize: 5,
+              pageSizeOptions: [5, 10, 20],
+              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              search: false,
+              sort : false,
+              filter: false
+            }}
+            data={this.state.classeCursusData.prix}
+          >
+
+          </MaterialTable>
+        }
+        else{
+          tablePrix =
           <MaterialTable
             title='Prix Obtenus'
             columns={[
@@ -76,6 +118,8 @@ class classeCursus extends React.Component {
           >
 
           </MaterialTable>
+        }
+        
       }
 
       let informations_clés =
