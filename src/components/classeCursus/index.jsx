@@ -36,8 +36,7 @@ class classeCursus extends React.Component {
       <CircularProgress />
     </Container>)
     } else {
-      console.log('données : ')
-      console.log(this.state.classeCursusData)
+
       let parcours_classe = this.state.classeCursusData
       let tablePrix = null
       // let tableInterpretations = null

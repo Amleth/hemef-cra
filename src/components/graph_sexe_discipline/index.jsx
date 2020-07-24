@@ -19,9 +19,7 @@ class graph_sexe_discipline extends Component {
         axios.get('http://data-iremus.huma-num.fr/api/hemef/stats/sexe_discipline').then(res => {
             const puredata = res.data
             let newdata = []
-            // console.log(puredata)
             for (const [key, value] of Object.entries(puredata)) {
-                // console.log(key)
                 let tempObj = {}
                 tempObj.discipline = key
                 tempObj.Homme = value["hommes"]
@@ -29,7 +27,6 @@ class graph_sexe_discipline extends Component {
                 tempObj.total = Number(value.hommes) + Number(value.femmes)
                 newdata.push(tempObj)
             }
-            console.log(newdata)
             newdata.sort(compareInscrits)
             this.setState({ data: newdata })
         }
