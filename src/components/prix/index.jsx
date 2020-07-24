@@ -23,6 +23,7 @@ function Prix({ history }) {
     const [typeP, setTypePrix] = useState('')
     const [discP, setDisciplinePrix] = useState('')
     const [yearP, setAnneePrix] = useState('')
+    const [compnP, setCompNomPrix] = useState('')
 
     async function fetchData() {
         const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/prix')
@@ -48,6 +49,10 @@ function Prix({ history }) {
         setNomPrix(event.target.value)
     }
 
+    const handleCompNomPrixChange = (event) => {
+        setCompNomPrix(event.target.value)
+    }
+
     const handleDisciplinePrixChange = (event) => {
         setDisciplinePrix(event.target.value)
     }
@@ -64,6 +69,13 @@ function Prix({ history }) {
     let n = {}
     for (let s of nomPrix) n[s] = null
     nomPrix = Object.keys(n)
+        .filter((s) => s.length > 0)
+        .sort()
+    
+    let compnomPrix = prixData.map((_) => _.complément_nom_prix_label).map((_) => (_ ? _.toLowerCase() : ''))
+    let cn = {}
+    for (let s of compnomPrix) cn[s] = null
+    compnomPrix = Object.keys(cn)
         .filter((s) => s.length > 0)
         .sort()
 
@@ -174,6 +186,25 @@ function Prix({ history }) {
                     </Select>
                 </FormControl>
 
+                <FormControl className={classes.formControl}>
+                    <InputLabel id='type-select-label'>Complément de Prix</InputLabel>
+                    <Select
+                        labelId='nom-select-label'
+                        id='nom-select'
+                        onChange={handleCompNomPrixChange}
+                        value={compnP}
+                    >
+                        <MenuItem value=''>
+                            <em>Pas de filtre</em>
+                        </MenuItem>
+                        {compnomPrix.map((s) => (
+                            <MenuItem key={s} value={s}>
+                                {s}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
                 <div style={{ maxWidth: '100%' }}>
                     <MaterialTable
                         title='Liste des prix recensés'
@@ -181,6 +212,7 @@ function Prix({ history }) {
                             { title: 'Nom', field: 'nom_label', defaultFilter: nameP },
                             { title: 'Type', field: 'type_label', defaultFilter: typeP},
                             { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
+                            { title: 'Complément', field: 'complément_nom_prix_label', defaultFilter: compnP },
                             { title: "Année d'attribution", field: 'année', defaultFilter: yearP },
                             { title: 'Prénom lauréat.e', field: 'élève_prénom' },
                             { title: 'Nom lauréat.e', field: 'élève_nom' },
