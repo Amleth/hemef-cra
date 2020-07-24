@@ -9,6 +9,7 @@ import { Avatar } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import { Search as SearchIcon } from '@material-ui/icons'
 import { ViewList as ViewListIcon } from '@material-ui/icons'
+import { Group as GroupIcon } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { DeveloperMode as DeveloperModeIcon } from '@material-ui/icons'
 import React from 'react'
@@ -41,9 +42,8 @@ function Home() {
       <Grid container className={classes.gridContainer} spacing={10}>
         <Grid item xs={7}>
           <Typography variant='body1' color='textSecondary' align='justify'>
-            Cette base de données rencense les informations d'élèves au Conservatoire de Paris de 1906 à 1910 puis de 1912 à 1914.
-            Liés à ces élèves sont également présentes les classes suivies, les villes d'origines mais aussi les prix obtenus.
-            Enfin, un receuil de graphiques permet l'étude statistique des données par leurs croisements selon différentes thématiques.
+          Cette base de données recense les élèves, musiciens ou comédiens, inscrits au Conservatoire national de Paris depuis sa fondation en 1795 jusqu’en 1914. 
+          Elle permet de suivre leur cursus au sein du Conservatoire et de croiser ces données avec celles qui concernent leur état civil, origine sociale, origine géographique, cursus antérieur et postérieur à celui du Conservatoire.
           </Typography>
         </Grid>
         <Grid item xs={5}>
@@ -54,16 +54,9 @@ function Home() {
                   <SearchIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Responsables scientifiques' secondary='Marie THEGARID & Cécile REYNAUD' />
+              <ListItemText primary='Responsables scientifiques' secondary='Marie DUCHENE-THEGARID & Cécile REYNAUD' />
             </ListItem>
-            {/* <ListItem disableGutters={true}>
-              <ListItemAvatar>
-                <Avatar>
-                  <ViewListIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary='Prétraitement des données' secondary='Florence LE PRIOL' />
-            </ListItem> */}
+            
             <ListItem disableGutters={true}>
               <ListItemAvatar>
                 <Avatar>
@@ -74,6 +67,22 @@ function Home() {
                 primary='Modélisation sémantique & développement logiciel'
                 secondary='Pierre LA ROCCA & Thomas BOTTINI'
               />
+            </ListItem>
+
+            <ListItem disableGutters={true}>
+              <ListItemAvatar>
+                <Avatar>
+                  <GroupIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary='Contributeur.rice.s' secondary='Catherine MEROT,
+Valérie BARBAT, 
+Gabriela Elgarrista, 
+Emmanuel HERVE, 
+Yvette ISSELIN,
+Françoise LAURENDEAU,
+Audrey POTTIER,
+Anastasiia SYREISCHIKOVA' />
             </ListItem>
           </List>
         </Grid>

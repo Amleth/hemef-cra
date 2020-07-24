@@ -67,7 +67,10 @@ class classeCursus extends React.Component {
               pageSize: 5,
               pageSizeOptions: [5, 10, 20],
               cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
-              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+              search: false,
+              sort : false,
+              filter: false
             }}
             data={this.state.classeCursusData.prix}
           >

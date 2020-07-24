@@ -63,7 +63,10 @@ class eleve extends React.Component {
       //affichage conditionnel du pseudonyme
       let infos_eleve = null
 
-      const dateNaissance = makeDate(eleve.date_de_naissance)
+      const dateNaissance = 
+        eleve.date_de_naissance ? makeDate(eleve.date_de_naissance) :
+        eleve.hypothèse_date_de_naissance ? eleve.hypothèse_date_de_naissance + ' (hypothèse)' : null 
+    
 
       if (this.state.eleveData.pseudonyme) {
         infos_eleve =
