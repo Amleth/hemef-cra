@@ -36,14 +36,17 @@ function Home() {
     <Container maxWidth='md'>
       <Box pt={5} pb={10}>
         <Typography variant='h2' component='h1' align='center'>
-        Histoire de l’enseignement de la musique en France au XIXe siècle
+          Histoire de l’enseignement de la musique en France au XIXe siècle
         </Typography>
       </Box>
       <Grid container className={classes.gridContainer} spacing={10}>
         <Grid item xs={7}>
           <Typography variant='body1' color='textSecondary' align='justify'>
-          Cette base de données recense les élèves, musiciens ou comédiens, inscrits au Conservatoire national de Paris depuis sa fondation en 1795 jusqu’en 1914. 
-          Elle permet de suivre leur cursus au sein du Conservatoire et de croiser ces données avec celles qui concernent leur état civil, origine sociale, origine géographique, cursus antérieur et postérieur à celui du Conservatoire.
+            Cette base de données recense les élèves, musiciens ou comédiens, inscrits au
+            Conservatoire national de Paris depuis sa fondation en 1795 jusqu’en 1914. Elle permet
+            de suivre leur cursus au sein du Conservatoire et de croiser ces données avec celles qui
+            concernent leur état civil, origine sociale, origine géographique, cursus antérieur et
+            postérieur à celui du Conservatoire.
           </Typography>
         </Grid>
         <Grid item xs={5}>
@@ -54,9 +57,12 @@ function Home() {
                   <SearchIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Responsables scientifiques' secondary='Marie DUCHENE-THEGARID & Cécile REYNAUD' />
+              <ListItemText
+                primary='Responsables scientifiques'
+                secondary='Marie DUCHÊNE-THÉGARID & Cécile REYNAUD'
+              />
             </ListItem>
-            
+
             <ListItem disableGutters={true}>
               <ListItemAvatar>
                 <Avatar>
@@ -75,14 +81,17 @@ function Home() {
                   <GroupIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Contributeur.rice.s' secondary='Catherine MEROT,
+              <ListItemText
+                primary='Contributeur•rice•s'
+                secondary='Catherine MEROT,
 Valérie BARBAT, 
 Gabriela Elgarrista, 
 Emmanuel HERVE, 
 Yvette ISSELIN,
 Françoise LAURENDEAU,
 Audrey POTTIER,
-Anastasiia SYREISCHIKOVA' />
+Anastasiia SYREISCHIKOVA'
+              />
             </ListItem>
           </List>
         </Grid>

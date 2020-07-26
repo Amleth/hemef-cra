@@ -1,13 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-
 // import indexElevesCursus from './components/eleveCursus'
 
-
-
 import { Box, Grid, Button, AppBar, Toolbar } from '@material-ui/core'
-import { Home } from '@material-ui/icons';
+import { Home } from '@material-ui/icons'
 import indexEleves from './components/indexEleves'
 import eleve from './components/eleve'
 import classeCursus from './components/classeCursus'
@@ -23,18 +20,60 @@ import home from './components/Home'
 //a adapter
 export default function App() {
   return (
-    <Router>
-      <AppBar position="static">
+    <Router basename='/hemef'>
+      <AppBar position='static'>
         <Toolbar>
-          <Grid container justify="center" direction='row' alignItems="center" >
-                <Button edge="center" color="inherit" aria-label="home" component={Link} to="/" startIcon={<Home />}>
-                  Acceuil
-                </Button>
-                <Button color='inherit' component={Link} to="/index_eleves" startIcon={<i className="fas fa-user"></i>}>Elèves</Button>
-                <Button color='inherit' component={Link} to="/indexClasses" startIcon={<i className="fas fa-chalkboard-teacher"></i>}>Classes</Button>
-                <Button color='inherit' component={Link} to="/prix" startIcon={<i className="fas fa-award"></i>}>Prix</Button>
-                <Button color='inherit' component={Link} to="/indexVilles" startIcon={<i className="fas fa-city"></i>}>Villes</Button>
-                <Button color='inherit' component={Link} to="/indexGraphes" startIcon={<i className="far fa-chart-bar"></i>}>Statistiques</Button>
+          <Grid container justify='center' direction='row' alignItems='center'>
+            <Button
+              edge='center'
+              color='inherit'
+              aria-label='home'
+              component={Link}
+              to='/'
+              startIcon={<Home />}
+            >
+              Accueil
+            </Button>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/index_eleves'
+              startIcon={<i className='fas fa-user'></i>}
+            >
+              Elèves
+            </Button>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/indexClasses'
+              startIcon={<i className='fas fa-chalkboard-teacher'></i>}
+            >
+              Classes
+            </Button>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/prix'
+              startIcon={<i className='fas fa-award'></i>}
+            >
+              Prix
+            </Button>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/indexVilles'
+              startIcon={<i className='fas fa-city'></i>}
+            >
+              Villes
+            </Button>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/indexGraphes'
+              startIcon={<i className='far fa-chart-bar'></i>}
+            >
+              Statistiques
+            </Button>
           </Grid>
         </Toolbar>
       </AppBar>
