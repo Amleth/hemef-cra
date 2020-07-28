@@ -29,7 +29,7 @@ class indexEleves extends React.Component {
           <MaterialTable
             title='Liste des élèves du conservatoire'
             columns={[
-              { title: 'Nom', field: 'nom' },
+              { title: 'Nom', field: 'nom', defaultSort : 'asc' },
               { title: 'Prénom', field: 'prénom' },
               { title: 'Cote AN du registre', field: 'cote_AN_registre' }
             ]}
