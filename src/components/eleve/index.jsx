@@ -94,7 +94,7 @@ class eleve extends React.Component {
         <Grid container direction='column' >
           {makeTextField('Cote AN Registre', eleve.cote_AN_registre)}
           <br />
-          {makeTextField("Date d'entrée au concervatoire ", makeDate(eleve.cursus_date_entree_conservatoire))}
+          {makeTextField("Date d'entrée au conservatoire ", makeDate(eleve.cursus_date_entree_conservatoire))}
           {makeTextField("Motif d'entrée", eleve.cursus_motif_admission)}
           <br />
           {makeTextField(intitule_date_sortie_conservatoire, champ_date_sortie_conservatoire)}
