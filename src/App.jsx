@@ -1,23 +1,20 @@
+import { Box, Grid, Button, AppBar, Toolbar } from '@material-ui/core'
+import { Home } from '@material-ui/icons'
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-// import indexElevesCursus from './components/eleveCursus'
-
-import { Box, Grid, Button, AppBar, Toolbar } from '@material-ui/core'
-import { Home } from '@material-ui/icons'
-import indexEleves from './components/indexEleves'
-import eleve from './components/eleve'
-import classeCursus from './components/classeCursus'
-import indexClasses from './components/indexClasses'
-import classe from './components/classe'
-import indexGraphes from './components/indexGraphiques'
-import graph_sexe_discipline from './components/graph_sexe_discipline'
-import indexVilles from './components/indexVilles'
-import ville from './components/ville'
-import prix from './components/prix'
+import indexEleves from './components/Eleves'
+import eleve from './components/Eleve'
+import classeCursus from './components/ClasseCursus'
+import indexClasses from './components/Classes'
+import classe from './components/Classe'
+import indexGraphes from './components/Graphiques'
+import graph_sexe_discipline from './components/GraphSexeDiscipline'
+import indexVilles from './components/Villes'
+import ville from './components/Ville'
+import prix from './components/Prix'
 import home from './components/Home'
 
-//a adapter
 export default function App() {
   return (
     <Router basename='/hemef'>
@@ -40,7 +37,7 @@ export default function App() {
               to='/index_eleves'
               startIcon={<i className='fas fa-user'></i>}
             >
-              Elèves
+              Élèves
             </Button>
             <Button
               color='inherit'
@@ -68,8 +65,8 @@ export default function App() {
             </Button>
             <Button
               color='inherit'
-              component={Link}
-              to='/indexGraphes'
+              // component={Link}
+              // to='/indexGraphes'
               startIcon={<i className='far fa-chart-bar'></i>}
             >
               Statistiques
