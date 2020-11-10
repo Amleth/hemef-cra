@@ -1,53 +1,44 @@
-import React from 'react'
-import { withRouter } from 'react-router'
-import axios from 'axios'
-import {
-  Container,
-  Typography,
-  Grid,
-  TextField,
-  CircularProgress
-} from '@material-ui/core'
+import { CircularProgress, Container, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router'
+import { makeTextField, formStyle } from '../common/helpers'
 
-class ville extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      cityData: null,
+const useStyles = makeStyles((theme) => ({
+  ...formStyle(theme)
+}))
+
+function Ville({ history, match }) {
+  const classes = useStyles();
+  const id = match.params.id;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/ville/' + id);
+      const json = await res.json()
+      setData(json)
     }
-  }
-  componentDidMount() {
-    const id = this.props.match.params.id
+    fetchData();
+  }, [id]);
 
-    axios.get('http://data-iremus.huma-num.fr/api/hemef/ville/' + id).then(res => {
-
-      this.setState({ cityData: res.data })
-    }
-    )
-  }
-  render() {
-    if (!this.state.cityData) {
-      return (<Container maxWidth='md' align='center'>
-      <CircularProgress />
-    </Container>)
-    } else {
-      let ville = this.state.cityData
-      let infoVille = null
-      if (!ville.département_label) {
-        infoVille = <Grid container direction='column' >
-          {makeTextField('Pays', ville.pays_label)}
-        </Grid>
-      } else {
-        infoVille =
-          <Grid container direction='column' >
-            {makeTextField('Département', ville.département_label)}
-            {makeTextField('Pays', ville.pays_label)}
-          </Grid>
-      }
-      let tableau = null
-      if (ville.élèves) {
-        tableau = <MaterialTable
+  if (Object.entries(data).length === 0) {
+    return (
+      <Container maxWidth='md' align='center'>
+        <CircularProgress />
+      </Container>
+    );
+  } else {
+    return (
+      <Container>
+        <Typography component='h1' variant='h3'>{data.ville_label}</Typography>
+        <div className={classes.form}>
+          {makeTextField('Pays', data['pays_label'])}
+          {data['département_label'] && makeTextField('Département', data['département_label'])}
+        </div>
+        <br />
+        <MaterialTable
           title='Ville de naissance de :'
           columns={[
             { title: 'Nom', field: 'élève_nom' },
@@ -55,10 +46,11 @@ class ville extends React.Component {
             { title: 'Cote', field: 'élève_cote_AN_registre' },
             { title: 'Sexe', field: 'élève_sexe' },
             {
-              title: 'pseudonyme', field: 'élève_pseudonyme', render: row => { 
-                if(row.élève_pseudonyme)
-                  return row.élève_pseudonyme ;
-                else return ('')}
+              title: 'pseudonyme', field: 'élève_pseudonyme', render: row => {
+                if (row.élève_pseudonyme)
+                  return row.élève_pseudonyme;
+                else return ('')
+              }
             }
           ]}
           options={{
@@ -67,36 +59,14 @@ class ville extends React.Component {
             cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
             headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
           }}
-          data={ville.élèves}
+          data={data.élèves}
           onRowClick={((evt, selectedRow) => {
             const id = selectedRow.élève.slice(-36)
-            this.props.history.push('/eleve/' + id)
-          })}>
-
-        </MaterialTable>
-      }
-      return (<Container>
-        <Typography component='h1' variant='h3'>{this.state.cityData.ville_label}</Typography>
-        {infoVille}
-        <br />
-        <br />
-        {tableau}
-      </Container>)
-    }
+            history.push('/eleve/' + id)
+          })} />
+      </Container>
+    )
   }
-
 }
 
-function makeTextField(f, v) {
-  return (
-    <TextField
-      label={f}
-      defaultValue={v}
-      InputProps={{
-        readOnly: true
-      }}
-    />
-  )
-}
-
-export default withRouter(ville)
+export default withRouter(Ville)

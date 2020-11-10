@@ -3,17 +3,17 @@ import { Home } from '@material-ui/icons'
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-import indexEleves from './components/Eleves'
-import eleve from './components/Eleve'
-import classeCursus from './components/ClasseCursus'
-import indexClasses from './components/Classes'
-import classe from './components/Classe'
-import indexGraphes from './components/Graphiques'
-import graph_sexe_discipline from './components/GraphSexeDiscipline'
-import indexVilles from './components/Villes'
-import ville from './components/Ville'
-import prix from './components/Prix'
-import home from './components/Home'
+import Eleves from './components/Eleves'
+import Eleve from './components/Eleve'
+import ClasseCursus from './components/ClasseCursus'
+import Classes from './components/Classes'
+import Classe from './components/Classe'
+// import indexGraphes from './components/Graphiques'
+// import graph_sexe_discipline from './components/GraphSexeDiscipline'
+import Villes from './components/Villes'
+import Ville from './components/Ville'
+import Prix from './components/Prix'
+import Home_ from './components/Home'
 
 export default function App() {
   return (
@@ -34,7 +34,7 @@ export default function App() {
             <Button
               color='inherit'
               component={Link}
-              to='/index_eleves'
+              to='/eleves'
               startIcon={<i className='fas fa-user'></i>}
             >
               Élèves
@@ -42,7 +42,7 @@ export default function App() {
             <Button
               color='inherit'
               component={Link}
-              to='/indexClasses'
+              to='/classes'
               startIcon={<i className='fas fa-chalkboard-teacher'></i>}
             >
               Classes
@@ -58,36 +58,36 @@ export default function App() {
             <Button
               color='inherit'
               component={Link}
-              to='/indexVilles'
+              to='/villes'
               startIcon={<i className='fas fa-city'></i>}
             >
               Villes
             </Button>
-            <Button
+            {/* <Button
               color='inherit'
-              // component={Link}
-              // to='/indexGraphes'
+              component={Link}
+              to='/indexGraphes'
               startIcon={<i className='far fa-chart-bar'></i>}
             >
               Statistiques
-            </Button>
+            </Button> */}
           </Grid>
         </Toolbar>
       </AppBar>
       <Box m={2} />
       <div>
         <Switch>
-          <Route exact path='/' children={home} />
-          <Route path='/classe/:id' children={classe} />
-          <Route path='/classe_cursus/:id' children={classeCursus} />
-          <Route path='/index_eleves' children={indexEleves} />
-          <Route path='/eleve/:id' children={eleve} />
-          <Route path='/indexClasses' children={indexClasses} />
-          <Route path='/indexVilles' children={indexVilles} />
-          <Route path='/ville/:id' children={ville} />
-          <Route path='/indexGraphes' children={indexGraphes} />
-          <Route path='/graph_sexe_discipline' children={graph_sexe_discipline} />
-          <Route path='/prix' children={prix} />
+          <Route exact path='/' children={Home_} />
+          <Route path='/classe/:id' children={Classe} />
+          <Route path='/classe_cursus/:id' children={ClasseCursus} />
+          <Route path='/eleves' children={Eleves} />
+          <Route path='/eleve/:id' children={Eleve} />
+          <Route path='/classes' children={Classes} />
+          <Route path='/villes' children={Villes} />
+          <Route path='/ville/:id' children={Ville} />
+          {/* <Route path='/indexGraphes' children={indexGraphes} /> */}
+          {/* <Route path='/graph_sexe_discipline' children={graph_sexe_discipline} /> */}
+          <Route path='/prix' children={Prix} />
         </Switch>
       </div>
     </Router>

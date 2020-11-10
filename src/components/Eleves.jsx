@@ -1,57 +1,51 @@
-import React from 'react'
-import MaterialTable from 'material-table'
-import { withRouter } from 'react-router'
-import axios from 'axios'
 import { CircularProgress, Container } from '@material-ui/core'
+import MaterialTable from 'material-table'
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router'
 
-class indexEleves extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      elevesData: [],
+function Eleves({ history, match }) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/eleves');
+      const json = await res.json()
+      setData(json)
     }
-  }
-  //a adapter
-  componentDidMount() {
-    axios.get('http://data-iremus.huma-num.fr/api/hemef/eleves').then(res => {
-      this.setState({ elevesData: res.data })
-    })
-  }
+    fetchData();
+  }, []);
 
-  render() {
-    if (!this.state.elevesData) {
-      return (<Container maxWidth='md' align='center'>
+  if (Object.entries(data).length === 0) {
+    return (
+      <Container maxWidth='md' align='center'>
         <CircularProgress />
-      </Container>)
-    } else {
-      return (
-        <div style={{ maxWidth: '100%' }}>
-          <MaterialTable
-            title='Liste des élèves du conservatoire'
-            columns={[
-              { title: 'Nom', field: 'nom', defaultSort: 'asc' },
-              { title: 'Prénom', field: 'prénom' },
-              { title: 'Cote AN du registre', field: 'cote_AN_registre' }
-            ]}
-            options={{
-              pageSize: 20,
-              pageSizeOptions: [10, 20, 50],
-              filtering: true,
-              sorting: true,
-              cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
-              headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
-            }}
-            data={this.state.elevesData}
-            onRowClick={((evt, selectedRow) => {
-              const eleveId = selectedRow.élève.slice(-36)
-              this.props.history.push('/eleve/' + eleveId)
-            })}
-          >
-          </MaterialTable>
-        </div>
-      )
-    }
+      </Container>
+    );
+  } else {
+    return <Container>
+      <MaterialTable
+        title='Élèves du conservatoire'
+        columns={[
+          { title: 'Nom', field: 'nom', defaultSort: 'asc' },
+          { title: 'Prénom', field: 'prénom' },
+          { title: 'Cote AN du registre', field: 'cote_AN_registre' }
+        ]}
+        options={{
+          pageSize: 20,
+          pageSizeOptions: [10, 20, 50],
+          filtering: true,
+          sorting: true,
+          cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+          headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+        }}
+        data={data}
+        onRowClick={((evt, selectedRow) => {
+          const eleveId = selectedRow.élève.slice(-36)
+          history.push('/eleve/' + eleveId)
+        })}
+      />
+    </Container>
   }
 }
 
-export default withRouter(indexEleves)
+export default withRouter(Eleves)

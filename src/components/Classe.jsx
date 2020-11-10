@@ -1,15 +1,9 @@
-import {
-  CircularProgress,
-  Grid,
-  Container,
-  TextField,
-  Typography
-} from '@material-ui/core'
+import { CircularProgress, Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router'
-import { formatDate, makeTextField, formStyle } from '../common/helpers'
+import { makeTextField, formStyle } from '../common/helpers'
 
 const useStyles = makeStyles((theme) => ({
   ...formStyle(theme)
@@ -76,10 +70,5 @@ function Classe({ history, match }) {
     )
   }
 }
-
-
-
-
-
 
 export default withRouter(Classe)

@@ -71,7 +71,7 @@ function Prix({ history }) {
     nomPrix = Object.keys(n)
         .filter((s) => s.length > 0)
         .sort()
-    
+
     let compnomPrix = prixData.map((_) => _.complément_nom_prix_label).map((_) => (_ ? _.toLowerCase() : ''))
     let cn = {}
     for (let s of compnomPrix) cn[s] = null
@@ -207,10 +207,10 @@ function Prix({ history }) {
 
                 <div style={{ maxWidth: '100%' }}>
                     <MaterialTable
-                        title='Liste des prix recensés'
+                        title='Prix recensés'
                         columns={[
                             { title: 'Nom', field: 'nom_label', defaultFilter: nameP },
-                            { title: 'Type', field: 'type_label', defaultFilter: typeP},
+                            { title: 'Type', field: 'type_label', defaultFilter: typeP },
                             { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
                             { title: 'Complément', field: 'complément_nom_prix_label', defaultFilter: compnP },
                             { title: "Année d'attribution", field: 'année', defaultFilter: yearP },
@@ -240,4 +240,3 @@ function Prix({ history }) {
 }
 
 export default withRouter(Prix)
-
