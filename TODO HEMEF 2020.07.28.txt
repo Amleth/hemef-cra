@@ -1,9 +1,0 @@
-Voici comme convenu nos souhaits quant au filtre chronologique.
-- Idéalement, il faudrait pouvoir chercher chronologiquement sur les écrans "liste des élèves du Conservatoire" et "liste des classes". 
-- Il me semble qu'une granularité à l'année est suffisante. Comme les dates sont saisies au format AAAA-MM-JJ, si c'est plus facile pour vous d'adopter une granularité plus fine, c'est possible aussi.
-- Pour l'écran "liste des élèves", nous pouvons utiliser la colonne de la date d'entrée au Conservatoire (cursus_date_entree_conservatoire, AA) ; 
-- Pour l'écran "liste des classes", nous pouvons utiliser celle de la date d'entrée dans la classe (parcours_classe_date_entree, BF). 
-- S'il est possible d'utiliser un double curseur, c'est très bien, mais nous pouvons aussi (si c'est plus simple) ajouter une colonne de recherche par date, comme c'est le cas sur l'écran des prix (année d'attribution).
-
-Deux autres réflexions nous sont venues à l'examen de l'interface telle qu'elle se présente. La première concerne les écrans "liste des élèves" et "liste des classes". Est-il possible d'ajouter la possibilité, dans les filtres, d'obtenir un tri par ordre alphabétique ? Me mettant à la place d'un chercheur qui ne sait pas exactement ce qu'il cherche, peut-être une vue d'ensemble préalablement triée serait-elle utile.
-La seconde concerne les champs de la base qui n'apparaissent pas à l'heure actuelle, comme les professions des parents ou, lorsqu'il y aura lieu, les adresses de résidence (sans parler des champs plus fourre-tout comme les observations ou les professions des élèves). Avez-vous d'ores et déjà prévu de les faire apparaître quelque part ? Dans la page de l'élève par exemple ?

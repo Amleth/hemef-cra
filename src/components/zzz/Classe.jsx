@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router'
-import { makeTextField, formStyle } from '../common/helpers'
+import { makeTextField } from '../common/helpers'
 
 const useStyles = makeStyles((theme) => ({
-  ...formStyle(theme)
+  // ...formStyle(theme)
 }))
 
 function Classe({ history, match }) {

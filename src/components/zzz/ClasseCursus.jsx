@@ -11,7 +11,7 @@ import { withRouter } from 'react-router';
 import { formatDate, makeTextField, formStyle } from '../common/helpers'
 
 const useStyles = makeStyles((theme) => ({
-  ...formStyle(theme)
+  // ...formStyle(theme)
 }))
 
 function ClasseCursus({ history, match }) {
@@ -45,7 +45,7 @@ function ClasseCursus({ history, match }) {
     );
   } else {
     return <Container>
-      <Typography component='h1' variant='h3'>Parcours classe</Typography>
+      {/* <Typography component='h1' variant='h3'>Parcours classe</Typography>
       <div className={classes.form}>
         {makeTextField('Élève', data.prénom + ' ' + data.nom)}
         {makeTextField('Dicsipline', data.discipline_label)}
@@ -84,7 +84,7 @@ function ClasseCursus({ history, match }) {
           { title: "Discipline", field: "prix_discipline_label" },
           { title: "Complément", field: "prix_complément_nom_prix_label" }
         ]}
-      />
+      /> */}
     </Container>
   }
 }

@@ -34,7 +34,7 @@ function Home() {
   return (
     <Container maxWidth='md'>
       <Box pt={5} pb={10}>
-        <Typography variant='h2' component='h1' align='center'>
+        <Typography variant='h3' component='h1' align='center'>
           Histoire de l’enseignement de la musique en France au XIXe siècle
         </Typography>
       </Box>
@@ -52,7 +52,7 @@ function Home() {
                   <SearchIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Responsables scientifiques' secondary='Marie DUCHÊNE-THÉGARID & Cécile REYNAUD' />
+              <ListItemText primary='Responsables scientifiques' secondary='Marie DUCHÊNE–THÉGARID & Cécile REYNAUD' />
             </ListItem>
 
             <ListItem disableGutters={true}>
@@ -71,7 +71,7 @@ function Home() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary='Contributeur•rice•s'
+                primary='Contributeur·rice·s'
                 secondary='Catherine MEROT,
 Valérie BARBAT, 
 Gabriela ELGARRISTA, 

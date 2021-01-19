@@ -10,18 +10,18 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "axios": "^0.21.0",
-    "clsx": "^1.1.1",
-    "dayjs": "^1.9.5",
-    "lodash": "^4.17.20",
-    "material-table": "^1.69.1",
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "apexcharts": "^3.23.1",
+    "axios": "latest",
+    "dayjs": "^1.10.3",
+    "lodash": "latest",
+    "material-table": "latest",
     "react": "latest",
+    "react-apexcharts": "^1.3.7",
     "react-dom": "latest",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "latest",
-    "recharts": "^1.8.5"
+    "react-router-dom": "latest",
+    "react-scripts": "latest"
   },
   "browserslist": {
     "production": [

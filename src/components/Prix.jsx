@@ -1,242 +1,254 @@
-import React, { useEffect, useState } from 'react'
-import MaterialTable from 'material-table'
-import { withRouter } from 'react-router'
-import { CircularProgress, Container, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import lodash from 'lodash'
+import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import MaterialTable from 'material-table'
+
+import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router'
+
+import { hemefStyles, makeNom, makePageTitle, makePrénom, makeProgress, COLOR_F, COLOR_M } from '../common/helpers'
+import { GRAPH, sparqlEndpoint } from '../sparql'
+import { prix_noms } from '../hemef-data'
+
+function insertBrBrIntoArray(arr) {
+    return arr.reduce((result, element, index, array) => {
+        result.push(element);
+        if (index < array.length - 1) {
+            result.push(<React.Fragment key={index}><br /><br /></React.Fragment>);
+        }
+        return result;
+    }, []);
+};
+
+const QUERY = `
+PREFIX hemef: <http://data-iremus.huma-num.fr/ns/hemef#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT
+    ?prix ?type ?nom_lc ?nom_complément ?discipline ?date
+
+    ?élève
+    ?élève_sexe
+    ?élève_nom
+    ?élève_nom_complément
+    ?élève_nom_épouse
+    ?élève_nom_épouse_TDC
+    ?élève_prénom_1
+    ?élève_prénom_2
+    ?élève_prénom_2_TDC
+    ?élève_prénom_complément
+    ?élève_prénom_complément_TDC
+WHERE {
+    GRAPH <${GRAPH}> {
+        ?prix rdf:type hemef:Prix .
+        ?pc hemef:prix ?prix .
+        OPTIONAL { ?prix hemef:type_valeur ?type . }
+        OPTIONAL { ?prix hemef:nom_complément_valeur ?nom_complément . }
+        OPTIONAL { ?prix hemef:date ?date . }
+        ?prix hemef:nom_valeur ?nom .
+        BIND (lcase(?nom) AS ?nom_lc)
+        OPTIONAL { ?prix hemef:discipline_catégorie_valeur ?d . }
+        BIND ( IF (BOUND (?d), ?d, "discipline inconnue" ) AS ?discipline  ) .
+        
+        ?pc hemef:élève ?élève .
+        OPTIONAL { ?élève hemef:sexe ?élève_sexe . }
+        OPTIONAL { ?élève hemef:cote_AN_registre ?élève_cote_AN_registre . }
+        OPTIONAL { ?élève hemef:cote_AN_registre_TDC ?élève_cote_AN_registre_TDC . }
+        OPTIONAL { ?élève hemef:nom ?élève_nom . }
+        OPTIONAL { ?élève hemef:nom_complément ?élève_nom_complément . }
+        OPTIONAL { ?élève hemef:nom_épouse ?élève_nom_épouse . }
+        OPTIONAL { ?élève hemef:nom_épouse_TDC ?élève_nom_épouse_TDC . }
+        OPTIONAL { ?élève hemef:prénom_1 ?élève_prénom_1 . }
+        OPTIONAL { ?élève hemef:prénom_2 ?élève_prénom_2 . }
+        OPTIONAL { ?élève hemef:prénom_2_TDC ?élève_prénom_2_TDC . }
+        OPTIONAL { ?élève hemef:prénom_complément ?élève_prénom_complément . }
+        OPTIONAL { ?élève hemef:prénom_complément_TDC ?élève_prénom_complément_TDC . }
+    }
+}
+`
 
 const useStyles = makeStyles((theme) => ({
-    formControl: {
-        marginLeft: theme.spacing(2),
-        minWidth: 150
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2)
-    }
-}))
-
-
-function Prix({ history }) {
-
-    const classes = useStyles()
-    const [prixData, setData] = useState([])
-    const [nameP, setNomPrix] = useState('')
-    const [typeP, setTypePrix] = useState('')
-    const [discP, setDisciplinePrix] = useState('')
-    const [yearP, setAnneePrix] = useState('')
-    const [compnP, setCompNomPrix] = useState('')
-
-    async function fetchData() {
-        const res = await fetch('http://data-iremus.huma-num.fr/api/hemef/prix')
-        res.json().then((res) => {
-            const initData = res
-            let dataArray = []
-            for (const o of initData) {
-                if (!o.année) {
-                    if (o.année_hypothèse) {
-                        o.année = o.année_hypothèse.split('-')[0] + ' (hypothèse)'
-                    }
-                }
-                else {
-                    o.année = o.année.split('^^')[0]
-                }
-                dataArray.push(o)
+    ...hemefStyles(theme),
+    disciplinesPrixTable: {
+        border: '1px solid #E0E0E0',
+        borderCollapse: 'collapse',
+        '& td:first-child': {
+            padding: '0 1em',
+            textAlign: 'right',
+        },
+        '& td, & th': {
+            border: '1px solid #E0E0E0',
+            padding: 0,
+            textAlign: 'center',
+            width: '20px',
+        },
+        '& th': {
+            backgroundColor: '#F9F9F9',
+            fontWeight: 'normal',
+            verticalAlign: 'bottom',
+            '& p': {
+                letterSpacing: 0,
+                lineHeight: 1,
+                margin: 0,
+                padding: '0.5em',
+                overflowWrap: 'anywhere',
+                width: '100%',
             }
-            setData(res)
-        })
-    }
+        }
 
-    const handleNomPrixChange = (event) => {
-        setNomPrix(event.target.value)
-    }
+    },
+    discipline: {
+        backgroundColor: '#F9F9F9',
+        fontWeight: 'normal',
+        textAlign: 'right',
+    },
+    dataCell: {
+        textAlign: 'center',
+    },
+    f: {
+        color: COLOR_F
+    },
+    m: {
+        color: COLOR_M
+    },
+}));
 
-    const handleCompNomPrixChange = (event) => {
-        setCompNomPrix(event.target.value)
-    }
-
-    const handleDisciplinePrixChange = (event) => {
-        setDisciplinePrix(event.target.value)
-    }
-
-    const handleTypePrixChange = (event) => {
-        setTypePrix(event.target.value)
-    }
-
-    const handleAnneePrixChange = (event) => {
-        setAnneePrix(event.target.value)
-    }
-
-    let nomPrix = prixData.map((_) => _.nom_label).map((_) => (_ ? _.toLowerCase() : ''))
-    let n = {}
-    for (let s of nomPrix) n[s] = null
-    nomPrix = Object.keys(n)
-        .filter((s) => s.length > 0)
-        .sort()
-
-    let compnomPrix = prixData.map((_) => _.complément_nom_prix_label).map((_) => (_ ? _.toLowerCase() : ''))
-    let cn = {}
-    for (let s of compnomPrix) cn[s] = null
-    compnomPrix = Object.keys(cn)
-        .filter((s) => s.length > 0)
-        .sort()
-
-    let disciplinePrix = prixData.map((_) => _.discipline_label).map((_) => (_ ? _.toLowerCase() : ''))
-    let d = {}
-    for (let s of disciplinePrix) d[s] = null
-    disciplinePrix = Object.keys(d)
-        .filter((s) => s.length > 0)
-        .sort()
-
-    let anneePrix = prixData.map((_) => _.année).map((_) => (_ ? _.toLowerCase() : ''))
-    let a = {}
-    for (let s of anneePrix) a[s] = null
-    anneePrix = Object.keys(a)
-        .filter((s) => s.length > 0)
-        .sort()
-
-    let typePrix = prixData.map((_) => _.type_label).map((_) => (_ ? _.toLowerCase() : ''))
-    let t = {}
-    for (let s of typePrix) t[s] = null
-    typePrix = Object.keys(t)
-        .filter((s) => s.length > 0)
-        .sort()
+function C({ history }) {
+    const classes = useStyles()
+    const [list, setList] = useState({})
+    const [stats, setStats] = useState({})
 
     useEffect(() => {
-        fetchData()
+        sparqlEndpoint(QUERY).then(res => {
+            setList(res.results.bindings)
+
+            // discipline => nom => sexe
+            const dico = lodash.groupBy(res.results.bindings, _ => _.discipline.value)
+            for (const k_discipline in dico) {
+                if (k_discipline === 'total') continue
+                let total = dico[k_discipline].length
+                dico[k_discipline] = lodash.groupBy(dico[k_discipline], _ => _.nom_lc.value)
+                dico[k_discipline].total = total
+                for (const k_nom in dico[k_discipline]) {
+                    if (k_nom === 'total') continue
+                    let total = dico[k_discipline][k_nom].length
+                    dico[k_discipline][k_nom] = lodash.groupBy(dico[k_discipline][k_nom], _ => _.élève_sexe.value)
+                    dico[k_discipline][k_nom].total = total
+                }
+            }
+            setStats(dico)
+        })
     }, [])
 
-    return prixData.length === 0 ? (
-        <Container maxWidth='md' align='center'>
-            <CircularProgress />
-        </Container>
-    ) : (
-            <>
-                <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Nom de Prix</InputLabel>
-                    <Select
-                        labelId='nom-select-label'
-                        id='nom-select'
-                        onChange={handleNomPrixChange}
-                        value={nameP}
-                    >
-                        <MenuItem value=''>
-                            <em>Pas de filtre</em>
-                        </MenuItem>
-                        {nomPrix.map((s) => (
-                            <MenuItem key={s} value={s}>
-                                {s}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Type de Prix</InputLabel>
-                    <Select
-                        labelId='nom-select-label'
-                        id='nom-select'
-                        onChange={handleTypePrixChange}
-                        value={typeP}
-                    >
-                        <MenuItem value=''>
-                            <em>Pas de filtre</em>
-                        </MenuItem>
-                        {typePrix.map((s) => (
-                            <MenuItem key={s} value={s}>
-                                {s}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Discipline de Prix</InputLabel>
-                    <Select
-                        labelId='nom-select-label'
-                        id='nom-select'
-                        onChange={handleDisciplinePrixChange}
-                        value={discP}
-                    >
-                        <MenuItem value=''>
-                            <em>Pas de filtre</em>
-                        </MenuItem>
-                        {disciplinePrix.map((s) => (
-                            <MenuItem key={s} value={s}>
-                                {s}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Année de Prix</InputLabel>
-                    <Select
-                        labelId='nom-select-label'
-                        id='nom-select'
-                        onChange={handleAnneePrixChange}
-                        value={yearP}
-                    >
-                        <MenuItem value=''>
-                            <em>Pas de filtre</em>
-                        </MenuItem>
-                        {anneePrix.map((s) => (
-                            <MenuItem key={s} value={s}>
-                                {s}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel id='type-select-label'>Complément de Prix</InputLabel>
-                    <Select
-                        labelId='nom-select-label'
-                        id='nom-select'
-                        onChange={handleCompNomPrixChange}
-                        value={compnP}
-                    >
-                        <MenuItem value=''>
-                            <em>Pas de filtre</em>
-                        </MenuItem>
-                        {compnomPrix.map((s) => (
-                            <MenuItem key={s} value={s}>
-                                {s}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <div style={{ maxWidth: '100%' }}>
-                    <MaterialTable
-                        title='Prix recensés'
-                        columns={[
-                            { title: 'Nom', field: 'nom_label', defaultFilter: nameP },
-                            { title: 'Type', field: 'type_label', defaultFilter: typeP },
-                            { title: 'Discipline', field: 'discipline_label', defaultFilter: discP },
-                            { title: 'Complément', field: 'complément_nom_prix_label', defaultFilter: compnP },
-                            { title: "Année d'attribution", field: 'année', defaultFilter: yearP },
-                            { title: 'Prénom lauréat.e', field: 'élève_prénom' },
-                            { title: 'Nom lauréat.e', field: 'élève_nom' },
-                            { title: 'Cote AN du registre lauréat.e', field: 'élève_cote_AN_registre' },
-                            { title: 'Sexe lauréat.e', field: 'élève_sexe', sorting: false }
-                        ]}
-                        options={{
-                            pageSize: 50,
-                            pageSizeOptions: [20, 50, 100],
-                            filtering: true,
-                            sorting: true,
-                            cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
-                            headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
-                        }}
-                        data={prixData}
-                        onRowClick={((evt, selectedRow) => {
-                            const eleveId = selectedRow.élève.slice(-36)
-                            history.push('/eleve/' + eleveId)
+    return Object.entries(stats).length === 0
+        ? makeProgress()
+        : <Container>
+            {makePageTitle(`PRIX`, classes.pageTitle)}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <div style={{ padding: '1em' }}>TOTAL</div>
+                <div style={{ padding: '1em 0' }}>=</div>
+                <div style={{ color: COLOR_F, padding: '1em' }}>♀</div>
+                <div style={{ padding: '1em 0' }}>+</div>
+                <div style={{ color: COLOR_M, padding: '1em' }}>♂</div>
+            </div>
+            <Table className={classes.disciplinesPrixTable}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell></TableCell>
+                        {prix_noms.map(_ => {
+                            return <TableCell key={_}><p>{
+                                insertBrBrIntoArray(_.split(' '))
+                            }</p></TableCell>
                         })}
-                    >
-                    </MaterialTable>
-                </div>
-            </>
-        )
+                        <TableCell><p>T<br />O<br />T<br />A<br />L</p></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {Object.entries(stats).sort(([da, a], [db, b]) => {
+                        if (a.total < b.total) return 1
+                        if (a.total > b.total) return -1
+                        return da.localeCompare(db)
+                    }).map(([discipline, _]) => {
+                        return <TableRow key={discipline}>
+                            <TableCell className={classes.discipline}>{discipline}</TableCell>
+                            {prix_noms.map(nom => {
+                                return <TableCell key={nom} className={classes.dataCell}>
+                                    {_[nom] && _[nom]['♀'] && _[nom]['♂'] ? <div>{_[nom].total}</div> : ''}
+                                    {_[nom] ? <div className={classes.f}>{_[nom]['♀'] ? <>{_[nom]['♀'].length}</> : ''}</div> : ''}
+                                    {_[nom] ? <div className={classes.m}>{_[nom]['♂'] ? <>{_[nom]['♂'].length}</> : ''}</div> : ''}
+                                </TableCell>
+                            })}
+                            <TableCell className={classes.dataCell}>{_.total}</TableCell>
+                        </TableRow>
+                    }
+                    )}
+                </TableBody>
+            </Table>
+            <br />
+            <MaterialTable
+                columns={[
+                    {
+                        defaultSort: 'asc',
+                        field: `type.value`,
+                        title: `Type`,
+                    },
+                    {
+                        defaultSort: 'asc',
+                        field: `type.nom_lc.value`,
+                        title: `Nom`,
+                        render: r => r.nom_lc.value + (r.nom_complément ? ` (${r.nom_complément.value})` : '')
+                    },
+                    {
+                        defaultSort: 'asc',
+                        field: `discipline.value`,
+                        title: `Discipline`
+                    },
+                    {
+                        defaultSort: 'asc',
+                        field: `date.value`,
+                        title: `Date`
+                    },
+                    {
+                        customFilterAndSearch: (term, rowData) => makeNom(rowData, 'élève_').indexOf(term) !== -1,
+                        defaultSort: 'asc',
+                        field: `élève_nom.value`,
+                        render: r => makeNom(r, 'élève_'),
+                        title: `Nom`,
+                    },
+                    {
+                        customFilterAndSearch: (term, rowData) => makePrénom(rowData, 'élève_').indexOf(term) !== -1,
+                        field: `élève_prénom.value`,
+                        render: r => makePrénom(r, 'élève_'),
+                        sorting: false,
+                        title: `Prénom`,
+                    },
+                    {
+                        defaultSort: 'asc',
+                        field: `élève_sexe.value`,
+                        title: `Sexe`
+                    },
+                ]}
+                onRowClick={((evt, selectedRow) => {
+                    const eleveId = selectedRow.élève.value.slice(-36)
+                    history.push('/eleve/' + eleveId)
+                })}
+                data={list}
+                options={{
+                    pageSize: 20,
+                    pageSizeOptions: [20, 50],
+                    filtering: true,
+                    sorting: true,
+                    cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+                    headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
+                }}
+                title={`${list.length} prix`}
+            />
+            <br />
+        </Container >
 }
 
-export default withRouter(Prix)
+export default withRouter(C)
