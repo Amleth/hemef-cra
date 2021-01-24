@@ -133,13 +133,11 @@ function C({ history, match }) {
         ? makeProgress()
         : <Container>
             {makePageTitle(`ÂGES DES ÉLÈVES À LEUR ENTRÉE AU CONSERVATOIRE`, classes.pageTitle)}
-            <div style={{ textAlign: 'center' }}>
-                <Typography>{n} élèves dans la base.</Typography>
-                <Typography>{noDN.size} élèves sans date de naissance.</Typography>
-                <Typography>{noDEC.size} élèves sans date d'entrée au Conservatoire.</Typography>
-                <Typography>{new Set([...noDN, ...noDEC]).size} élèves écartés dans le calcul.</Typography>
-                <Typography>{n - noDN.size - noDEC.size} élèves pris en compte dans le calcul.</Typography>
-            </div>
+            <Typography>{n} élèves dans la base.</Typography>
+            <Typography>{noDN.size} élèves sans date de naissance.</Typography>
+            <Typography>{noDEC.size} élèves sans date d'entrée au Conservatoire.</Typography>
+            <Typography>{new Set([...noDN, ...noDEC]).size} élèves écartés dans le calcul.</Typography>
+            <Typography>{n - noDN.size - noDEC.size} élèves pris en compte dans le calcul.</Typography>
             <div id="chart">
                 <ReactApexChart options={{
                     chart: {
