@@ -1,9 +1,16 @@
 import dayjs from 'dayjs'
-import { Button, CircularProgress, Container, TextField, Typography } from '@material-ui/core'
+import { Button, CircularProgress, Container, Paper, TextField, Typography } from '@material-ui/core'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 export const TDC_SEP = ' ⬢ '
+export const MULTIVALUE_SEP = ' ⬢ '
 
 export const hemefStyles = theme => ({
   root: {
@@ -138,8 +145,8 @@ export function f(v) {
   return v ? v : ''
 }
 
-export const COLOR_F = 'lightseagreen'
-export const COLOR_M = 'coral'
+export const COLOR_F = '#20B2AA'
+export const COLOR_M = '#FF7F50'
 
 export function makeNom(élève, predicates_prefix = '') {
   const parts = []
@@ -174,5 +181,64 @@ export function makePrénom(élève, predicates_prefix = '') {
   if (prénom_complément) parts.push(prénom_complément)
   if (prénom_complément_TDC && prénom_complément_TDC !== prénom_complément) parts.push(prénom_complément_TDC + ' [TDC]')
   const res = parts.join(', ')
+  return res
+}
+
+export function makeTable(title, data, styleClasses, paper = true) {
+  const t = _makeTable(
+    [[title, 'Registres', 'Tableaux des classes']],
+    data,
+    styleClasses,
+  )
+  return paper
+    ? <Paper variant="outlined" square>{t}</Paper>
+    : t
+}
+
+export function _makeTable(headRows, bodyRows, styleClasses) {
+  const t = <TableContainer>
+    <Table size='small' className={styleClasses.table}>
+      <TableHead>
+        {headRows.map((row, i) => <TableRow key={i}>
+          {row.map((cell, i) => <TableCell key={i}>{cell}</TableCell>)}
+        </TableRow>)}
+      </TableHead>
+      <TableBody>
+        {bodyRows.map((row, i) => <TableRow key={i}>
+          {row.map((cell, i) => <TableCell key={i} className={styleClasses.valueCell}>{cell}</TableCell>)}
+        </TableRow>)}
+      </TableBody>
+    </Table>
+  </TableContainer>
+  return t
+}
+
+export function processÉlèvesList(triples) {
+  for (const t of triples) {
+    if (t.nom.value.toLowerCase().slice(0, 6) === 'de la ') {
+      t.nom.value = t.nom.value.slice(6) + ', ' + t.nom.value.slice(0, 6).trim()
+    }
+    else if (t.nom.value.toLowerCase().slice(0, 3) === 'de ') {
+      t.nom.value = t.nom.value.slice(3) + ', ' + t.nom.value.slice(0, 3).trim()
+    }
+    else if (t.nom.value.toLowerCase().slice(0, 2) === 'd\'') {
+      t.nom.value = t.nom.value.slice(2) + ', ' + t.nom.value.slice(0, 2).trim()
+    }
+    // Gestion du pseudonyme
+    const _pseudonyme = t.pseudonyme && t.pseudonyme.value
+    const _pseudonyme_TDC = t.pseudonyme_TDC && t.pseudonyme_TDC.value
+    let pseudonyme = new Set()
+    _pseudonyme && pseudonyme.add(_pseudonyme)
+    _pseudonyme_TDC && pseudonyme.add(_pseudonyme_TDC + ' [TDC]')
+    pseudonyme = Array.from(pseudonyme).join(TDC_SEP)
+    pseudonyme && (t.pseudonyme = pseudonyme)
+  }
+
+  return triples
+}
+
+export function range(from, to) {
+  const res = []
+  for (let i = from; i <= to; i++) res.push(i)
   return res
 }

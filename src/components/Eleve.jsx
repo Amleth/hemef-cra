@@ -5,11 +5,10 @@ import { withRouter } from 'react-router'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import { GRAPH, RESOURCE_PREFIX, sparqlEndpoint } from '../sparql'
-import { f, formatValue as _formatValue, formatDate as _formatDate, hemefStyles, makeLink, makePageTitle, makeProgress, makeSectionTitle } from '../common/helpers'
+import { RESOURCE_PREFIX, sparqlEndpoint } from '../sparql'
+import { f, formatValue as _formatValue, formatDate as _formatDate, hemefStyles, makeLink, makePageTitle, makeProgress, makeSectionTitle, makeTable } from '../common/helpers'
 
 const useStyles = makeStyles((theme) => ({
   ...hemefStyles(theme)
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const makeQuery = id => `
 SELECT *
 WHERE {
-  GRAPH <${GRAPH}> {
+  GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
     <${RESOURCE_PREFIX + id}> ?p ?o .
     FILTER (?p != hemef:parcours-classe && ?p != hemef:adresse) .
   }
@@ -28,7 +27,7 @@ WHERE {
 const makeAdressesQuery = id => `
 SELECT *
 WHERE {
-  GRAPH <${GRAPH}> {
+  GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
     <${RESOURCE_PREFIX + id}> hemef:adresse ?s .
     ?s ?p ?o .
   }
@@ -38,7 +37,7 @@ WHERE {
 const makeParcoursClassesQuery = id => `
 SELECT *
 WHERE {
-  GRAPH <${GRAPH}> {
+  GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
     <${RESOURCE_PREFIX + id}> hemef:parcours-classe ?s .
     ?s ?p ?o .
     FILTER (?p != hemef:prix) .
@@ -49,7 +48,7 @@ WHERE {
 const makeClasseQuery = id => `
 SELECT *
 WHERE {
-  GRAPH <${GRAPH}> {
+  GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
     <${id}> ?p ?o .
     FILTER (?p != rdf:type) .
   }
@@ -59,7 +58,7 @@ WHERE {
 const makePrixQuery = id => `
 SELECT *
 WHERE {
-  GRAPH <${GRAPH}> {
+  GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
     <${id}> hemef:prix ?prix .
     ?prix ?prix_p ?prix_o .
     FILTER (?prix_p != rdf:type) .
@@ -265,34 +264,6 @@ function Eleve({ history, match }) {
     })()
   }, [id])
 
-  function _makeTable(headRows, bodyRows) {
-    const t = <TableContainer>
-      <Table size='small' className={styleClasses.table}>
-        <TableHead>
-          {headRows.map((row, i) => <TableRow key={i}>
-            {row.map((cell, i) => <TableCell key={i}>{cell}</TableCell>)}
-          </TableRow>)}
-        </TableHead>
-        <TableBody>
-          {bodyRows.map((row, i) => <TableRow key={i}>
-            {row.map((cell, i) => <TableCell key={i} className={styleClasses.valueCell}>{cell}</TableCell>)}
-          </TableRow>)}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    return t
-  }
-
-  function makeTable(title, data, paper = true) {
-    const t = _makeTable(
-      [[title, 'Registres', 'Tableaux des classes']],
-      data
-    )
-    return paper
-      ? <Paper variant="outlined" square>{t}</Paper>
-      : t
-  }
-
   if (Object.entries(triples).length === 0) {
     return makeProgress()
   } else {
@@ -320,7 +291,7 @@ function Eleve({ history, match }) {
           ['Profession de la mère', ...formatValue('mère_profession')],
           ['Profession du père', ...formatValue('père_profession')],
           ...adresses
-        ])}
+        ], styleClasses)}
         <br />
         <br />
         {makeTable('SAISIE', [
@@ -330,7 +301,7 @@ function Eleve({ history, match }) {
           ['Remarques de saisie', ...formatValue('remarques_de_saisie')],
           ['Identifiant 1', ...formatValue('identifiant_1')],
           ['Identifiant 2', ...formatValue('identifiant_2')],
-        ])}
+        ], styleClasses)}
         <br />
         <br />
         {makeTable('CURSUS', [
@@ -341,7 +312,7 @@ function Eleve({ history, match }) {
           ['Pré-cursus, établissement', ...formatValue('établissement_pré-cursus_nom')],
           ['Pré-cursus, type d\'établissement', ...formatValue('établissement_pré-cursus_type')],
           ['Pré-cursus, ville', formatVille(triples['établissement_pré-cursus_ville_nom']), formatVille(triples['établissement_pré-cursus_ville_nom_TDC'])],
-        ])}
+        ], styleClasses)}
         <br />
         <br />
         {makeSectionTitle(`CLASSES SUIVIES`, styleClasses.pageSectionTitle)}
@@ -364,7 +335,7 @@ function Eleve({ history, match }) {
               ['Classe, cote AN', ..._formatValue(pc, 'classe_cote_AN')],
               ['Classe, observations', ..._formatValue(pc, 'classe_observations')],
               ['Classe, remarques saisie', ..._formatValue(pc, 'classe_remarques_saisie')],
-            ], false)}
+            ], styleClasses, false)}
             {pc.prix.length > 0 &&
               <Table size='small' className={styleClasses.table} style={{ borderTop: '1px solid #E0E0E0' }}>
                 <TableHead>

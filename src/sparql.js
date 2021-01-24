@@ -1,5 +1,3 @@
-export const GRAPH = `http://data-iremus.huma-num.fr/graph/hemef`
-
 export const RESOURCE_PREFIX = `http://data-iremus.huma-num.fr/id/`
 
 export const PREFIXES = `

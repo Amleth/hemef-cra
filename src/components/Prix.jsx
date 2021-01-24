@@ -1,6 +1,7 @@
 import lodash from 'lodash'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -12,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 
 import { hemefStyles, makeNom, makePageTitle, makePrénom, makeProgress, COLOR_F, COLOR_M } from '../common/helpers'
-import { GRAPH, sparqlEndpoint } from '../sparql'
+import { sparqlEndpoint } from '../sparql'
 import { prix_noms } from '../hemef-data'
 
 function insertBrBrIntoArray(arr) {
@@ -29,33 +30,41 @@ const QUERY = `
 PREFIX hemef: <http://data-iremus.huma-num.fr/ns/hemef#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 SELECT
-    ?prix ?type ?nom_lc ?nom_complément ?discipline ?date
+    ?prix
+        ?date_année
+        ?date_hypothèse
+        ?discipline
+        ?nom
+        ?nom_complément
+        ?type
 
     ?élève
-    ?élève_sexe
-    ?élève_nom
-    ?élève_nom_complément
-    ?élève_nom_épouse
-    ?élève_nom_épouse_TDC
-    ?élève_prénom_1
-    ?élève_prénom_2
-    ?élève_prénom_2_TDC
-    ?élève_prénom_complément
-    ?élève_prénom_complément_TDC
+        ?élève_sexe
+        ?élève_nom
+        ?élève_nom_complément
+        ?élève_nom_épouse
+        ?élève_nom_épouse_TDC
+        ?élève_prénom_1
+        ?élève_prénom_2
+        ?élève_prénom_2_TDC
+        ?élève_prénom_complément
+        ?élève_prénom_complément_TDC
 WHERE {
-    GRAPH <${GRAPH}> {
+    GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
         ?prix rdf:type hemef:Prix .
         ?pc hemef:prix ?prix .
-        OPTIONAL { ?prix hemef:type_valeur ?type . }
-        OPTIONAL { ?prix hemef:nom_complément_valeur ?nom_complément . }
-        OPTIONAL { ?prix hemef:date ?date . }
-        ?prix hemef:nom_valeur ?nom .
-        BIND (lcase(?nom) AS ?nom_lc)
-        OPTIONAL { ?prix hemef:discipline_catégorie_valeur ?d . }
-        BIND ( IF (BOUND (?d), ?d, "discipline inconnue" ) AS ?discipline  ) .
+            OPTIONAL { ?prix hemef:date_année ?date_année . }
+            OPTIONAL { ?prix hemef:date_hypothèse ?date_hypothèse . }
+            OPTIONAL { ?prix hemef:discipline_valeur ?discipline_valeur . }
+            OPTIONAL { ?prix hemef:discipline_catégorie_valeur ?_d . }
+                BIND ( IF (BOUND (?_d), lcase(?_d), lcase(?discipline_valeur) ) AS ?__d ) .
+                BIND ( IF (BOUND (?__d), ?__d, '?' ) AS ?discipline ) .
+            OPTIONAL { ?prix hemef:nom_valeur ?_n . }
+                BIND ( IF (BOUND (?_n), lcase(?_n), '—' ) AS ?nom ) .
+            OPTIONAL { ?prix hemef:nom_complément_valeur ?nom_complément . }
+            OPTIONAL { ?prix hemef:type_valeur ?type . }
         
         ?pc hemef:élève ?élève .
-        OPTIONAL { ?élève hemef:sexe ?élève_sexe . }
         OPTIONAL { ?élève hemef:cote_AN_registre ?élève_cote_AN_registre . }
         OPTIONAL { ?élève hemef:cote_AN_registre_TDC ?élève_cote_AN_registre_TDC . }
         OPTIONAL { ?élève hemef:nom ?élève_nom . }
@@ -67,6 +76,7 @@ WHERE {
         OPTIONAL { ?élève hemef:prénom_2_TDC ?élève_prénom_2_TDC . }
         OPTIONAL { ?élève hemef:prénom_complément ?élève_prénom_complément . }
         OPTIONAL { ?élève hemef:prénom_complément_TDC ?élève_prénom_complément_TDC . }
+        OPTIONAL { ?élève hemef:sexe ?élève_sexe . }
     }
 }
 `
@@ -131,7 +141,7 @@ function C({ history }) {
             for (const k_discipline in dico) {
                 if (k_discipline === 'total') continue
                 let total = dico[k_discipline].length
-                dico[k_discipline] = lodash.groupBy(dico[k_discipline], _ => _.nom_lc.value)
+                dico[k_discipline] = lodash.groupBy(dico[k_discipline], _ => _.nom.value)
                 dico[k_discipline].total = total
                 for (const k_nom in dico[k_discipline]) {
                     if (k_nom === 'total') continue
@@ -151,20 +161,20 @@ function C({ history }) {
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                 <div style={{ padding: '1em' }}>TOTAL</div>
                 <div style={{ padding: '1em 0' }}>=</div>
-                <div style={{ color: COLOR_F, padding: '1em' }}>♀</div>
+                <div style={{ color: COLOR_F, padding: '1em' }}>FEMMES</div>
                 <div style={{ padding: '1em 0' }}>+</div>
-                <div style={{ color: COLOR_M, padding: '1em' }}>♂</div>
+                <div style={{ color: COLOR_M, padding: '1em' }}>HOMMES</div>
             </div>
             <Table className={classes.disciplinesPrixTable}>
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
+                        <TableCell><p>T<br />O<br />T<br />A<br />L</p></TableCell>
                         {prix_noms.map(_ => {
                             return <TableCell key={_}><p>{
                                 insertBrBrIntoArray(_.split(' '))
                             }</p></TableCell>
                         })}
-                        <TableCell><p>T<br />O<br />T<br />A<br />L</p></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -175,6 +185,7 @@ function C({ history }) {
                     }).map(([discipline, _]) => {
                         return <TableRow key={discipline}>
                             <TableCell className={classes.discipline}>{discipline}</TableCell>
+                            <TableCell className={classes.dataCell}>{_.total}</TableCell>
                             {prix_noms.map(nom => {
                                 return <TableCell key={nom} className={classes.dataCell}>
                                     {_[nom] && _[nom]['♀'] && _[nom]['♂'] ? <div>{_[nom].total}</div> : ''}
@@ -182,7 +193,6 @@ function C({ history }) {
                                     {_[nom] ? <div className={classes.m}>{_[nom]['♂'] ? <>{_[nom]['♂'].length}</> : ''}</div> : ''}
                                 </TableCell>
                             })}
-                            <TableCell className={classes.dataCell}>{_.total}</TableCell>
                         </TableRow>
                     }
                     )}
@@ -190,17 +200,15 @@ function C({ history }) {
             </Table>
             <br />
             <MaterialTable
+                components={{
+                    Container: props => <Paper {...props} elevation={0} square={true} variant='outlined' />
+                }}
                 columns={[
                     {
                         defaultSort: 'asc',
-                        field: `type.value`,
-                        title: `Type`,
-                    },
-                    {
-                        defaultSort: 'asc',
-                        field: `type.nom_lc.value`,
+                        field: `type.nom.value`,
                         title: `Nom`,
-                        render: r => r.nom_lc.value + (r.nom_complément ? ` (${r.nom_complément.value})` : '')
+                        render: r => r.nom.value + (r.nom_complément ? ` (${r.nom_complément.value})` : '')
                     },
                     {
                         defaultSort: 'asc',
@@ -209,27 +217,33 @@ function C({ history }) {
                     },
                     {
                         defaultSort: 'asc',
-                        field: `date.value`,
-                        title: `Date`
+                        field: `type.value`,
+                        title: `Type`,
+                    },
+                    {
+                        defaultSort: 'asc',
+                        field: `date_année.value`,
+                        title: `Année`,
+                        render: r => r.date_année ? r.date_année.value + (r.date_hypothèse ? ` (hypothèse)` : '') : ''
                     },
                     {
                         customFilterAndSearch: (term, rowData) => makeNom(rowData, 'élève_').indexOf(term) !== -1,
                         defaultSort: 'asc',
                         field: `élève_nom.value`,
                         render: r => makeNom(r, 'élève_'),
-                        title: `Nom`,
+                        title: `Nom lauréat·e`,
                     },
                     {
                         customFilterAndSearch: (term, rowData) => makePrénom(rowData, 'élève_').indexOf(term) !== -1,
                         field: `élève_prénom.value`,
                         render: r => makePrénom(r, 'élève_'),
                         sorting: false,
-                        title: `Prénom`,
+                        title: `Prénom lauréat·e`,
                     },
                     {
                         defaultSort: 'asc',
                         field: `élève_sexe.value`,
-                        title: `Sexe`
+                        title: `Sexe lauréat·e`
                     },
                 ]}
                 onRowClick={((evt, selectedRow) => {
