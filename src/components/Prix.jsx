@@ -206,7 +206,7 @@ function C({ history }) {
                 columns={[
                     {
                         defaultSort: 'asc',
-                        field: `type.nom.value`,
+                        field: `nom.value`,
                         title: `Nom`,
                         render: r => r.nom.value + (r.nom_complément ? ` (${r.nom_complément.value})` : '')
                     },

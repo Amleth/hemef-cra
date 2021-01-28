@@ -14,7 +14,7 @@
     "@material-ui/icons": "latest",
     "apexcharts": "^3.23.1",
     "axios": "latest",
-    "dayjs": "^1.10.3",
+    "dayjs": "^1.10.4",
     "lodash": "latest",
     "material-table": "latest",
     "react": "latest",
