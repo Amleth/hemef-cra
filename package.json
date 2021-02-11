@@ -12,7 +12,7 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
-    "apexcharts": "^3.23.1",
+    "apexcharts": "^3.24.0",
     "axios": "latest",
     "dayjs": "^1.10.4",
     "lodash": "latest",
