@@ -1,15 +1,15 @@
 import { Container, Slider, Typography } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { sparqlEndpoint } from '../sparql'
 import { hemefStyles, makeNom, makePageTitle, makePrénom, makeProgress, processÉlèvesList } from '../common/helpers'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   ...hemefStyles(theme),
-}));
+}))
 
 const QUERY = `
 SELECT *
@@ -18,6 +18,7 @@ WHERE {
     ?s rdf:type hemef:Élève .
     OPTIONAL { ?s hemef:cote_AN_registre ?cote_AN_registre . }
     OPTIONAL { ?s hemef:cote_AN_registre_TDC ?cote_AN_registre_TDC . }
+    OPTIONAL { ?s hemef:sexe ?sexe . }
     OPTIONAL { ?s hemef:nom ?nom . }
     OPTIONAL { ?s hemef:nom_complément ?nom_complément . }
     OPTIONAL { ?s hemef:nom_épouse ?nom_épouse . }
@@ -42,18 +43,17 @@ WHERE {
 `
 
 function Eleves({ history, match }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const [triples, setTriples] = useState([]);
-  const [minYear, setMinYear] = useState(Number.MAX_SAFE_INTEGER);
-  const [maxYear, setMaxYear] = useState(Number.MIN_SAFE_INTEGER);
-  const [currentMinYear, setCurrentMinYear] = useState(Number.MAX_SAFE_INTEGER);
-  const [currentMaxYear, setCurrentMaxYear] = useState(Number.MIN_SAFE_INTEGER);
-  const [yearsMarks, setYearsMarks] = useState([]);
+  const [triples, setTriples] = useState([])
+  const [minYear, setMinYear] = useState(Number.MAX_SAFE_INTEGER)
+  const [maxYear, setMaxYear] = useState(Number.MIN_SAFE_INTEGER)
+  const [currentMinYear, setCurrentMinYear] = useState(Number.MAX_SAFE_INTEGER)
+  const [currentMaxYear, setCurrentMaxYear] = useState(Number.MIN_SAFE_INTEGER)
+  const [yearsMarks, setYearsMarks] = useState([])
 
   useEffect(() => {
     sparqlEndpoint(QUERY).then(res => {
-
       setTriples(processÉlèvesList(res.results.bindings))
 
       let tempMinYear = Number.MAX_SAFE_INTEGER
@@ -67,10 +67,12 @@ function Eleves({ history, match }) {
           tempYearsMarks.add(i)
         }
       }
-      setYearsMarks(Array.from(tempYearsMarks).map(i => ({
-        value: i,
-        label: (i === tempMinYear || i === tempMaxYear) ? i.toString() : ''
-      })))
+      setYearsMarks(
+        Array.from(tempYearsMarks).map(i => ({
+          value: i,
+          label: i === tempMinYear || i === tempMaxYear ? i.toString() : '',
+        }))
+      )
       setMinYear(tempMinYear)
       setMaxYear(tempMaxYear)
       setCurrentMinYear(tempMinYear)
@@ -78,93 +80,101 @@ function Eleves({ history, match }) {
     })
   }, [])
 
-  const data = triples.filter(_ => (currentMinYear === minYear
-    && currentMaxYear === maxYear
-    && !_.date_entrée_conservatoire_année)
-    ||
-    (_.date_entrée_conservatoire_année
-      && _.date_entrée_conservatoire_année.value >= currentMinYear
-      && _.date_entrée_conservatoire_année.value <= currentMaxYear))
+  const data = triples.filter(
+    _ =>
+      (currentMinYear === minYear && currentMaxYear === maxYear && !_.date_entrée_conservatoire_année) ||
+      (_.date_entrée_conservatoire_année &&
+        _.date_entrée_conservatoire_année.value >= currentMinYear &&
+        _.date_entrée_conservatoire_année.value <= currentMaxYear)
+  )
 
   if (triples.length === 0) {
     return makeProgress()
   } else {
-    return <Container>
-      {makePageTitle(`ÉLÈVES`, classes.pageTitle)}
-      <Typography>
-        Filtrer la liste des élèves par année d'entrée au conservatoire :
-      </Typography>
+    return (
       <Container>
-        <Slider
-          min={minYear}
-          max={maxYear}
-          defaultValue={[minYear, maxYear]}
-          getAriaValueText={v => v}
-          onChange={(e, nV) => {
-            setCurrentMinYear(nV[0])
-            setCurrentMaxYear(nV[1])
+        {makePageTitle(`ÉLÈVES`, classes.pageTitle)}
+        <Typography>Filtrer la liste des élèves par année d'entrée au conservatoire :</Typography>
+        <Container>
+          <Slider
+            min={minYear}
+            max={maxYear}
+            defaultValue={[minYear, maxYear]}
+            getAriaValueText={v => v}
+            onChange={(e, nV) => {
+              setCurrentMinYear(nV[0])
+              setCurrentMaxYear(nV[1])
+            }}
+            value={[currentMinYear, currentMaxYear]}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            marks={yearsMarks}
+            step={null}
+          />
+        </Container>
+        <br />
+        <MaterialTable
+          components={{
+            Container: props => <Paper {...props} elevation={0} square={true} variant="outlined" />,
           }}
-          value={[currentMinYear, currentMaxYear]}
-          valueLabelDisplay="auto"
-          aria-labelledby="range-slider"
-          marks={yearsMarks}
-          step={null}
-        />
-      </Container>
-      <br />
-      <MaterialTable
-        components={{
-          Container: props => <Paper {...props} elevation={0} square={true} variant='outlined' />
-        }}
-        columns={[
-          {
-            customFilterAndSearch: (term, rowData) => makeNom(rowData).indexOf(term) !== -1,
-            defaultSort: 'asc',
-            field: `nom.value`,
-            render: r => makeNom(r),
-            title: `Nom`,
-          },
-          {
-            customFilterAndSearch: (term, rowData) => makePrénom(rowData).indexOf(term) !== -1,
-            field: `prénom`,
-            render: r => makePrénom(r),
-            sorting: false,
-            title: `Prénom`,
-          },
-          {
-            field: `pseudonyme`,
+          columns={[
+            {
+              customFilterAndSearch: (term, rowData) =>
+                makeNom(rowData).toLowerCase().indexOf(term.toLowerCase()) !== -1,
+              defaultSort: 'asc',
+              field: `nom.value`,
+              render: r => makeNom(r),
+              title: `Nom`,
+            },
+            {
+              customFilterAndSearch: (term, rowData) =>
+                makePrénom(rowData).toLowerCase().indexOf(term.toLowerCase()) !== -1,
+              field: `prénom`,
+              render: r => makePrénom(r),
+              sorting: false,
+              title: `Prénom`,
+            },
+            {
+              field: `pseudonyme`,
+              sorting: true,
+              title: `Pseudonyme`,
+            },
+            {
+              field: `sexe.value`,
+              sorting: true,
+              title: `Sexe`,
+            },
+            {
+              field: `cote_AN_registre.value`,
+              title: `Cote AN du registre`,
+            },
+            {
+              title: `Date d'entrée au conservatoire`,
+              field: `date_entrée_conservatoire_datetime.value`,
+              render: rowData =>
+                rowData.date_entrée_conservatoire_datetime
+                  ? new Date(rowData.date_entrée_conservatoire_datetime.value).toLocaleDateString()
+                  : null,
+            },
+          ]}
+          data={data}
+          onRowClick={(evt, selectedRow) => {
+            const eleveId = selectedRow.s.value.slice(-36)
+            history.push('/eleve/' + eleveId)
+          }}
+          options={{
+            pageSize: 20,
+            pageSizeOptions: [20, 50],
+            filtering: true,
             sorting: true,
-            title: `Pseudonyme`,
-          },
-          {
-            field: `cote_AN_registre.value`,
-            title: `Cote AN du registre`
-          },
-          {
-            title: `Date d'entrée au conservatoire`,
-            field: `date_entrée_conservatoire_datetime.value`,
-            render: rowData => rowData.date_entrée_conservatoire_datetime
-              ? new Date(rowData.date_entrée_conservatoire_datetime.value).toLocaleDateString()
-              : null
-          }
-        ]}
-        data={data}
-        onRowClick={((evt, selectedRow) => {
-          const eleveId = selectedRow.s.value.slice(-36)
-          history.push('/eleve/' + eleveId)
-        })}
-        options={{
-          pageSize: 20,
-          pageSizeOptions: [20, 50],
-          filtering: true,
-          sorting: true,
-          cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
-          headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' }
-        }}
-        title={`${data.length} élèves entre ${currentMinYear} et ${currentMaxYear}`}
-      />
-      <br />
-    </Container>
+            cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+            headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+          }}
+          title={`${data.length} élèves entre ${currentMinYear} et ${currentMaxYear}`}
+        />
+        <br />
+      </Container>
+    )
   }
 }
 

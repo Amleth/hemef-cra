@@ -378,7 +378,7 @@ function Eleve({ history, match }) {
         </React.Fragment>)}
         <br />
         <div style={{ textAlign: 'center' }}>
-          ⬢ : aggrégation d'informations différentes constatées sur les sources
+          ⬢ : agrégation d'informations différentes constatées sur les sources
         </div>
         <div style={{ textAlign: 'center' }}>
           ⬡ : valeurs identiques dans les registres et les tableaux des classes
