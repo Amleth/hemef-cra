@@ -5,7 +5,8 @@ import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { sparqlEndpoint } from '../sparql'
-import { hemefStyles, makeNom, makePageTitle, makePrénom, makeProgress, processÉlèvesList } from '../common/helpers'
+import { hemefStyles, makePageTitle, makeProgress, processÉlèvesList } from '../common/helpers'
+import { élèvesColumns } from './élèves_helpers'
 
 const useStyles = makeStyles(theme => ({
   ...hemefStyles(theme),
@@ -87,7 +88,6 @@ function Eleves({ history, match }) {
         _.date_entrée_conservatoire_année.value >= currentMinYear &&
         _.date_entrée_conservatoire_année.value <= currentMaxYear)
   )
-
   if (triples.length === 0) {
     return makeProgress()
   } else {
@@ -117,46 +117,7 @@ function Eleves({ history, match }) {
           components={{
             Container: props => <Paper {...props} elevation={0} square={true} variant="outlined" />,
           }}
-          columns={[
-            {
-              customFilterAndSearch: (term, rowData) =>
-                makeNom(rowData).toLowerCase().indexOf(term.toLowerCase()) !== -1,
-              defaultSort: 'asc',
-              field: `nom.value`,
-              render: r => makeNom(r),
-              title: `Nom`,
-            },
-            {
-              customFilterAndSearch: (term, rowData) =>
-                makePrénom(rowData).toLowerCase().indexOf(term.toLowerCase()) !== -1,
-              field: `prénom`,
-              render: r => makePrénom(r),
-              sorting: false,
-              title: `Prénom`,
-            },
-            {
-              field: `pseudonyme`,
-              sorting: true,
-              title: `Pseudonyme`,
-            },
-            {
-              field: `sexe.value`,
-              sorting: true,
-              title: `Sexe`,
-            },
-            {
-              field: `cote_AN_registre.value`,
-              title: `Cote AN du registre`,
-            },
-            {
-              title: `Date d'entrée au conservatoire`,
-              field: `date_entrée_conservatoire_datetime.value`,
-              render: rowData =>
-                rowData.date_entrée_conservatoire_datetime
-                  ? new Date(rowData.date_entrée_conservatoire_datetime.value).toLocaleDateString()
-                  : null,
-            },
-          ]}
+          columns={élèvesColumns('')}
           data={data}
           onRowClick={(evt, selectedRow) => {
             const eleveId = selectedRow.s.value.slice(-36)

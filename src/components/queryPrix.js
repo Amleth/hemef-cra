@@ -11,6 +11,8 @@ SELECT
         ?type
 
     ?élève
+        ?élève_cote_AN_registre
+        ?élève_date_entrée_conservatoire_datetime
         ?élève_sexe
         ?élève_nom
         ?élève_nom_complément
@@ -21,6 +23,7 @@ SELECT
         ?élève_prénom_2_TDC
         ?élève_prénom_complément
         ?élève_prénom_complément_TDC
+        ?élève_pseudonyme
 WHERE {
     GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
         ?prix rdf:type hemef:Prix .
@@ -39,6 +42,7 @@ WHERE {
         ?pc hemef:élève ?élève .
         OPTIONAL { ?élève hemef:cote_AN_registre ?élève_cote_AN_registre . }
         OPTIONAL { ?élève hemef:cote_AN_registre_TDC ?élève_cote_AN_registre_TDC . }
+        OPTIONAL { ?élève hemef:date_entrée_conservatoire_datetime ?élève_date_entrée_conservatoire_datetime . }
         OPTIONAL { ?élève hemef:nom ?élève_nom . }
         OPTIONAL { ?élève hemef:nom_complément ?élève_nom_complément . }
         OPTIONAL { ?élève hemef:nom_épouse ?élève_nom_épouse . }
@@ -48,6 +52,7 @@ WHERE {
         OPTIONAL { ?élève hemef:prénom_2_TDC ?élève_prénom_2_TDC . }
         OPTIONAL { ?élève hemef:prénom_complément ?élève_prénom_complément . }
         OPTIONAL { ?élève hemef:prénom_complément_TDC ?élève_prénom_complément_TDC . }
+        OPTIONAL { ?élève hemef:pseudonyme ?élève_pseudonyme . }
         OPTIONAL { ?élève hemef:sexe ?élève_sexe . }
     }
 }

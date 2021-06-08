@@ -1,18 +1,14 @@
 import lodash from 'lodash'
 import { withRouter } from 'react-router'
 import React, { useEffect, useState } from 'react'
-import { Container } from '@material-ui/core'
+import MaterialTable from 'material-table'
+import { Button, Container, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-
 import { hemefStyles, makePageTitle, makeProgress, COLOR_F, COLOR_M } from '../common/helpers'
 import { sparqlEndpoint } from '../sparql'
 import { prix_noms } from '../hemef-data'
 import queryPrix from './queryPrix'
+import { élèvesColumns } from './élèves_helpers'
 
 const useStyles = makeStyles(theme => ({
   ...hemefStyles(theme),
@@ -50,6 +46,10 @@ const useStyles = makeStyles(theme => ({
   },
   dataCell: {
     textAlign: 'center',
+
+    '&:hover': {
+      backgroundColor: '#F9F9F9',
+    },
   },
   f: {
     color: COLOR_F,
@@ -74,9 +74,10 @@ function insertBrBrIntoArray(arr) {
   }, [])
 }
 
-function C() {
+function C({ history }) {
   const classes = useStyles()
   const [stats, setStats] = useState({})
+  const [focusedStudents, setFocusedStudents] = useState({})
 
   useEffect(() => {
     sparqlEndpoint(queryPrix).then(res => {
@@ -100,6 +101,43 @@ function C() {
 
   if (Object.entries(stats).length === 0) {
     return makeProgress()
+  } else if (Object.entries(focusedStudents).length > 0) {
+    return (
+      <Container>
+        <Button color="primary" variant="contained" onClick={e => setFocusedStudents({})}>
+          Revenir au tableau des prix
+        </Button>
+        <br />
+        <br />
+        <MaterialTable
+          columns={[
+            {
+              field: 'date_année.value',
+              sorting: true,
+              title: `Année d'obtention`,
+            },
+            ...élèvesColumns('élève_'),
+          ]}
+          components={{
+            Container: props => <Paper {...props} elevation={0} square={true} variant="outlined" />,
+          }}
+          data={focusedStudents.students}
+          onRowClick={(evt, selectedRow) => {
+            const eleveId = selectedRow.élève.value.slice(-36)
+            history.push('/eleve/' + eleveId)
+          }}
+          options={{
+            pageSize: 10,
+            pageSizeOptions: [10, 30],
+            filtering: true,
+            sorting: true,
+            cellStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+            headerStyle: { paddingBottom: '0.3em', paddingTop: '0.3em' },
+          }}
+          title={`${focusedStudents.discipline} — ${focusedStudents.nom}`}
+        />
+      </Container>
+    )
   } else {
     return (
       <Container>
@@ -142,8 +180,17 @@ function C() {
                     <TableCell className={classes.discipline}>{discipline}</TableCell>
                     <TableCell className={classes.dataCell}>{_.total}</TableCell>
                     {prix_noms.map(nom => {
+                      let students = []
+                      if (_[nom] && _[nom].H) students = students.concat(_[nom].H)
+                      if (_[nom] && _[nom].F) students = students.concat(_[nom].F)
                       return (
-                        <TableCell key={nom} className={classes.dataCell}>
+                        <TableCell
+                          key={nom}
+                          className={classes.dataCell}
+                          onClick={e => {
+                            if (students.length) setFocusedStudents({ ..._[nom], discipline, nom, students })
+                          }}
+                        >
                           {_[nom] && _[nom]['F'] && _[nom]['H'] ? <div>{_[nom].total}</div> : ''}
                           {_[nom] ? (
                             <div className={classes.f}>{_[nom]['F'] ? <>{_[nom]['F'].length}</> : ''}</div>
