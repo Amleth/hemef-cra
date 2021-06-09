@@ -24,6 +24,7 @@ SELECT
         ?élève_prénom_complément
         ?élève_prénom_complément_TDC
         ?élève_pseudonyme
+        ?élève_pseudonyme_TDC
 WHERE {
     GRAPH <http://data-iremus.huma-num.fr/graph/hemef> {
         ?prix rdf:type hemef:Prix .
@@ -53,6 +54,7 @@ WHERE {
         OPTIONAL { ?élève hemef:prénom_complément ?élève_prénom_complément . }
         OPTIONAL { ?élève hemef:prénom_complément_TDC ?élève_prénom_complément_TDC . }
         OPTIONAL { ?élève hemef:pseudonyme ?élève_pseudonyme . }
+        OPTIONAL { ?élève hemef:pseudonyme_TDC ?élève_pseudonyme_TDC . }
         OPTIONAL { ?élève hemef:sexe ?élève_sexe . }
     }
 }

@@ -148,42 +148,6 @@ export function f(v) {
 export const COLOR_F = '#20B2AA'
 export const COLOR_M = '#FF7F50'
 
-export function makeNom(élève, predicates_prefix = '') {
-  const parts = []
-
-  const nom = (élève[predicates_prefix + 'nom'] && élève[predicates_prefix + 'nom'].value) || ''
-  // const nom_TDC = élève[predicates_prefix + 'nom_TDC'] && élève[predicates_prefix + 'nom_TDC'].value || ''
-  const nom_complément = (élève[predicates_prefix + 'nom_complément'] && élève[predicates_prefix + 'nom_complément'].value) || ''
-  const nom_épouse = (élève[predicates_prefix + 'nom_épouse'] && élève[predicates_prefix + 'nom_épouse'].value) || ''
-  const nom_épouse_TDC = (élève[predicates_prefix + 'nom_épouse_TDC'] && élève[predicates_prefix + 'nom_épouse_TDC'].value) || ''
-
-  if (nom_complément) parts.push(élève[predicates_prefix + 'nom_complément'].value)
-  if (nom_épouse) parts.push(`ép. ${nom_épouse}`)
-  if (nom_épouse_TDC && nom_épouse_TDC !== nom_épouse) parts.push(`ép. ${nom_épouse_TDC} [TDC]`)
-
-  return parts.length > 0
-    ? nom + `, ${parts.join(', ')}`
-    : nom
-}
-
-export function makePrénom(élève, predicates_prefix = '') {
-  const parts = []
-
-  const prénom_1 = (élève[predicates_prefix + 'prénom_1'] && élève[predicates_prefix + 'prénom_1'].value) || ''
-  const prénom_2 = (élève[predicates_prefix + 'prénom_2'] && élève[predicates_prefix + 'prénom_2'].value) || ''
-  const prénom_2_TDC = (élève[predicates_prefix + 'prénom_2_TDC'] && élève[predicates_prefix + 'prénom_2_TDC'].value) || ''
-  const prénom_complément = (élève[predicates_prefix + 'prénom_complément'] && élève[predicates_prefix + 'prénom_complément'].value) || ''
-  const prénom_complément_TDC = (élève[predicates_prefix + 'prénom_complément_TDC'] && élève[predicates_prefix + 'prénom_complément_TDC'].value) || ''
-
-  if (prénom_1) parts.push(prénom_1)
-  if (prénom_2) parts.push(prénom_2)
-  if (prénom_2_TDC && prénom_2_TDC !== prénom_2) parts.push(prénom_2_TDC + ' [TDC]')
-  if (prénom_complément) parts.push(prénom_complément)
-  if (prénom_complément_TDC && prénom_complément_TDC !== prénom_complément) parts.push(prénom_complément_TDC + ' [TDC]')
-  const res = parts.join(', ')
-  return res
-}
-
 export function makeTable(title, data, styleClasses, paper = true) {
   const t = _makeTable(
     [[title, 'Registres', 'Tableaux des classes']],
@@ -211,30 +175,6 @@ export function _makeTable(headRows, bodyRows, styleClasses) {
     </Table>
   </TableContainer>
   return t
-}
-
-export function processÉlèvesList(triples) {
-  for (const t of triples) {
-    if (t.nom.value.toLowerCase().slice(0, 6) === 'de la ') {
-      t.nom.value = t.nom.value.slice(6) + ', ' + t.nom.value.slice(0, 6).trim()
-    }
-    else if (t.nom.value.toLowerCase().slice(0, 3) === 'de ') {
-      t.nom.value = t.nom.value.slice(3) + ', ' + t.nom.value.slice(0, 3).trim()
-    }
-    else if (t.nom.value.toLowerCase().slice(0, 2) === 'd\'') {
-      t.nom.value = t.nom.value.slice(2) + ', ' + t.nom.value.slice(0, 2).trim()
-    }
-    // Gestion du pseudonyme
-    const _pseudonyme = t.pseudonyme && t.pseudonyme.value
-    const _pseudonyme_TDC = t.pseudonyme_TDC && t.pseudonyme_TDC.value
-    let pseudonyme = new Set()
-    _pseudonyme && pseudonyme.add(_pseudonyme)
-    _pseudonyme_TDC && pseudonyme.add(_pseudonyme_TDC + ' [TDC]')
-    pseudonyme = Array.from(pseudonyme).join(TDC_SEP)
-    pseudonyme && (t.pseudonyme = pseudonyme)
-  }
-
-  return triples
 }
 
 export function range(from, to) {

@@ -5,8 +5,8 @@ import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { sparqlEndpoint } from '../sparql'
-import { hemefStyles, makePageTitle, makeProgress, processÉlèvesList } from '../common/helpers'
-import { élèvesColumns } from './élèves_helpers'
+import { hemefStyles, makePageTitle, makeProgress } from '../common/helpers'
+import { élèvesColumns, processÉlèvesList } from '../common/élèves_helpers'
 
 const useStyles = makeStyles(theme => ({
   ...hemefStyles(theme),

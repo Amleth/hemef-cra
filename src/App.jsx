@@ -12,6 +12,7 @@ import Prix from './components/Prix'
 import Stats from './components/Stats'
 import StatsPrixTable from './components/StatsPrixTable'
 import StatsAgeEntreeConservatoire from './components/StatsAgeEntreeConservatoire'
+import Ville from './components/Ville'
 import Villes from './components/Villes'
 
 export default function App() {
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/classes" children={Classes} />
           <Route path="/prix" children={Prix} />
           <Route path="/villes" children={Villes} />
+          <Route path="/ville/:ville" children={Ville} />
           <Route path="/stats" children={Stats} />
           <Route path="/stats-prix" children={StatsPrixTable} />
           <Route path="/stats-age-entree-conservatoire" children={StatsAgeEntreeConservatoire} />

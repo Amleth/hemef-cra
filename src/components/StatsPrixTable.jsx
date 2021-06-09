@@ -8,7 +8,7 @@ import { hemefStyles, makePageTitle, makeProgress, COLOR_F, COLOR_M } from '../c
 import { sparqlEndpoint } from '../sparql'
 import { prix_noms } from '../hemef-data'
 import queryPrix from './queryPrix'
-import { élèvesColumns } from './élèves_helpers'
+import { élèvesColumns, processÉlèvesList } from '../common/élèves_helpers'
 
 const useStyles = makeStyles(theme => ({
   ...hemefStyles(theme),
@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right',
   },
   dataCell: {
+    cursor: 'default',
     textAlign: 'center',
 
     '&:hover': {
@@ -102,6 +103,7 @@ function C({ history }) {
   if (Object.entries(stats).length === 0) {
     return makeProgress()
   } else if (Object.entries(focusedStudents).length > 0) {
+    const data = processÉlèvesList(focusedStudents.students, 'élève_')
     return (
       <Container>
         <Button color="primary" variant="contained" onClick={e => setFocusedStudents({})}>
@@ -121,7 +123,7 @@ function C({ history }) {
           components={{
             Container: props => <Paper {...props} elevation={0} square={true} variant="outlined" />,
           }}
-          data={focusedStudents.students}
+          data={data}
           onRowClick={(evt, selectedRow) => {
             const eleveId = selectedRow.élève.value.slice(-36)
             history.push('/eleve/' + eleveId)

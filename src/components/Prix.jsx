@@ -6,7 +6,8 @@ import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 
-import { hemefStyles, makeNom, makePageTitle, makePrénom, makeProgress, COLOR_F, COLOR_M } from '../common/helpers'
+import { hemefStyles, makePageTitle, makeProgress, COLOR_F, COLOR_M } from '../common/helpers'
+import { makeNom, makePrénom } from '../common/élèves_helpers'
 import { sparqlEndpoint } from '../sparql'
 import queryPrix from './queryPrix'
 

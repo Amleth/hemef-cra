@@ -97,6 +97,9 @@ function C({ history }) {
           },
         ]}
         data={villesDeNaissance}
+        onRowClick={(evt, selectedRow) => {
+          history.push('/ville/' + selectedRow.ville)
+        }}
         options={{
           pageSize: 20,
           pageSizeOptions: [20, 50],
